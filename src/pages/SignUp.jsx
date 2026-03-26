@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, CircleUserRound, FolderPen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import API from "../services/api";
 
 export default function SignUp() {
 
     const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate()
 
   const handleSubmit = (e)=>{
     e.preventDefault();
@@ -14,6 +19,24 @@ export default function SignUp() {
   const show = () => {
     setShowPassword(!showPassword);
   };
+
+  const handleSignUp = async ()=>{
+    try{
+      await API.post("/register", {
+        email,
+        username,
+        name,
+        password
+      });
+
+      alert("Signup successful");
+      navigate("/");
+
+    }catch(e){
+      console.error(e);
+      alert("Signup failed")
+    }
+  }
 
   return (
     <div className="container-fluid">
@@ -65,7 +88,7 @@ export default function SignUp() {
               Ready to Jam!
             </p>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="needs-validation" noValidate>
               <div className="mb-3">
                 <label className="form-label text-white">Email</label> &nbsp;&nbsp;
                 <Mail  className="absolute w-4 h-4 mb-2" />
@@ -74,7 +97,11 @@ export default function SignUp() {
                   <input
                     className="form-control border-color"
                     placeholder="you@example.com"
+                    type="email"
+                    value={email}
+                    onChange={(e)=>setEmail(e.target.value)}
                     style={{ backgroundColor: "#27272b", color: "white" }}
+                    required
                   />
                 </div>
               </div>
@@ -87,7 +114,11 @@ export default function SignUp() {
                   <input
                     className="form-control border-color"
                     placeholder="Enter your name"
+                    type="text"
+                    value={name}
+                    onChange={(e)=>setName(e.target.value)}
                     style={{ backgroundColor: "#27272b", color: "white" }}
+                    required
                   />
                 </div>
               </div>
@@ -99,10 +130,12 @@ export default function SignUp() {
                   
                   <input
                     className="form-control border-color"
+                    type="text"
                     placeholder="Enter your username"
                     value={username}
                     onChange={(e)=>setUsername(e.target.value)}
                     style={{ backgroundColor: "#27272b", color: "white" }}
+                    required
                   />
                 </div>
               </div>
@@ -119,7 +152,8 @@ export default function SignUp() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e)=>setPassword(e.target.value)}
-                    className="form-control border-color "
+                    className="form-control border-color"
+                    required
                   />
                   <button type="button" onClick={show} className="btn">
                     {showPassword ? <EyeOff color="#f68523" className="w-4 h-4" /> : <Eye color="#f68523" className="w-4 h-4" />}
@@ -128,6 +162,7 @@ export default function SignUp() {
 
               <button
                 className="btn w-100"
+                onClick={handleSignUp}
                 style={{ backgroundColor: "#f68523", color: "white" }}
               >
                 Submit

@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, CircleUserRound } from "lucide-react";
+import API from '../services/api';
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e)=>{
     e.preventDefault();
@@ -15,10 +17,26 @@ export default function Login() {
     setShowPassword(!showPassword);
   };
 
+  const handleLogin = async ()=>{
+    try {
+      const res = await API.post("/login", {
+        username, password
+      });
+
+      localStorage.setItem("token", res.data.token);
+      navigate("/feed")
+    } catch (e) {
+      console.log(e);
+      alert("Login Failed")
+      
+    }
+
+  }
+
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-6 p-0">
+        <div className="col-lg-6 d-lg-flex d-sm-none d-md-none p-0">
           <div
             className="d-flex flex-column justify-content-end p-5"
             style={{
@@ -50,8 +68,8 @@ export default function Login() {
           </div>
         </div>
         <div
-          className="col-6 d-flex justify-content-center align-items-center"
-          style={{ backgroundColor: "#141213" }}
+          className="col-lg-6 col-md-12 col-sm-12 d-flex justify-content-center align-items-center"
+          style={{ backgroundColor: "#141213", height:"100vh" }}
         >
           <div style={{ width: "100%", maxWidth: "400px" }}>
             <img
@@ -100,10 +118,11 @@ export default function Login() {
               </div>
 
               <button
+                onClick={handleLogin}
                 className="btn w-100"
                 style={{ backgroundColor: "#f68523", color: "white" }}
               >
-                Submit
+                Log In
               </button>
             </form>
 
