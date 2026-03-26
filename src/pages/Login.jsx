@@ -81,10 +81,11 @@ export default function Login() {
                 </div>
               </div>
 
-              <div className="mb-3">
-                <label className="form-label text-white">Password</label>
+              <label className="form-label text-white">Password</label>
                 &nbsp;&nbsp;
                 <Lock className="absolute w-4 h-4 mb-2" />
+
+              <div className="mb-4 d-flex">
                 <input
                   id="password"
                   type = {showPassword ? "text":"password"}
@@ -94,7 +95,7 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <button onClick={show} type="button" className="btn">
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? <EyeOff color="#f68523" className="w-4 h-4" /> : <Eye color="#f68523" className="w-4 h-4" />}
                 </button>
               </div>
 

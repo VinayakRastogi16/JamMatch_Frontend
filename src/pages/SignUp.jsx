@@ -110,7 +110,7 @@ export default function SignUp() {
               <label className="form-label text-white">Password</label>&nbsp;&nbsp;
                 <Lock className="absolute w-4 h-4 mb-2" />
 
-              <div className="mb-3 d-flex">
+              <div className="mb-4 d-flex">
                 
                   
                   <input
