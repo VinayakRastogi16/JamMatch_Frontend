@@ -127,7 +127,8 @@ export default function Login() {
             </form>
 
             <hr />
-            <p className="account">
+
+            <p className="account mt-3">
               Don't have an account? | <Link to="/signup">Sign up</Link>
             </p>
           </div>
@@ -136,3 +137,4 @@ export default function Login() {
     </div>
   );
 }
+
