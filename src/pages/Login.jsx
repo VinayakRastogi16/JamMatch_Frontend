@@ -34,11 +34,10 @@ export default function Login() {
   }
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-lg-6 d-lg-flex d-sm-none d-md-none p-0">
+    <>
+      <div className="grid grid-cols-2">
+        
           <div
-            className="d-flex flex-column justify-content-end p-5"
             style={{
               backgroundImage: `
         linear-gradient(
@@ -55,20 +54,22 @@ export default function Login() {
               width: "100%",
             }}
           >
-            <div>
-              <h1 className="text-white fw-bold">Find your</h1>
+            <div className="" style={{height:"100vh"}}>
+              <div className="flex items-end justify-start h-[100vh] w-full p-4">
+              <h1  className="">Find your</h1>
               <h1 style={{ color: "#f68523" }} className="fw-bold">
                 perfect jam.
               </h1>
-              <p className="text-secondary">
+              <p className="text-white">
                 Connect with musicians near you. Match by genre, skill level,
                 and vibe.
               </p>
             </div>
+            </div>
           </div>
-        </div>
+          <></>
         <div
-          className="col-lg-6 col-md-12 col-sm-12 d-flex justify-content-center align-items-center"
+          className="flex justify-center"
           style={{ backgroundColor: "#141213", height:"100vh" }}
         >
           <div style={{ width: "100%", maxWidth: "400px" }}>
@@ -134,7 +135,7 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
