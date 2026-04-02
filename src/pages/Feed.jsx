@@ -29,7 +29,7 @@ function Feed() {
     }
 
     fetchUser();
-  }, []);
+  } );
 
   const handleLike = async () => {
     await API.post(`/like/${user.id}`);
