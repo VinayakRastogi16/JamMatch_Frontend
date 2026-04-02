@@ -56,13 +56,15 @@ export default function Login() {
           >
             <div className="" style={{height:"100vh"}}>
               <div className="flex items-end justify-start h-[100vh] w-full p-4">
-              <h1  className="">Find your</h1>
-              <h1 style={{ color: "#f68523" }} className="fw-bold">
+              <p>
+              <p  className="text-5xl text-white font-bold">Find your</p>
+              <p style={{ color: "#f68523" }} className="text-5xl font-bold my-4">
                 perfect jam.
-              </h1>
-              <p className="text-white">
+              </p>
+              <p className="text-zinc-600">
                 Connect with musicians near you. Match by genre, skill level,
                 and vibe.
+              </p>
               </p>
             </div>
             </div>
@@ -72,7 +74,7 @@ export default function Login() {
           className="flex justify-center"
           style={{ backgroundColor: "#141213", height:"100vh" }}
         >
-          <div style={{ width: "100%", maxWidth: "400px" }}>
+          <div style={{ width: "100%", maxWidth: "400px" }} className="m-auto">
             <img
               src="/Jam.png"
               alt=""
@@ -84,7 +86,7 @@ export default function Login() {
               Sign in to find your next session
             </p>
 
-            <form onSubmit={handleSubmit}>
+            <form className="items-center" onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label className="form-label text-white">Username</label>{" "}
                 &nbsp;&nbsp;
@@ -118,6 +120,7 @@ export default function Login() {
                 </button>
               </div>
 
+              <div>
               <button
                 onClick={handleLogin}
                 className="btn w-100"
@@ -125,9 +128,16 @@ export default function Login() {
               >
                 Log In
               </button>
+              </div>
             </form>
 
-            <hr />
+            {/* <div className="relative flex item-center gap-4">
+            <div className="flex-1 h-px bg-zinc"></div>
+            <p className="text-zinc-600 tracking-wider text-muted-foreground uppercase">Or continue with</p>
+            <div className="flex-1 h-px bg-border"></div>
+            </div> */}
+
+
 
             <p className="account mt-3">
               Don't have an account? | <Link to="/signup">Sign up</Link>

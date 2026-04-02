@@ -54,17 +54,20 @@ function Feed() {
   if (!user) return <h2>No more users</h2>;
 
   return (
-    <div className="container-fluid pt-5" style={{backgroundColor:"#27272b", height:"100vh"}}>
+    <div className="pt-5 bg-zinc-600" style={{ height:"100vh"}}>
     <div className="" style={{}}>
-      <div className="d-flex justify-content-center">
+      <div className="flex justify-center">
       <TinderCard
         onSwipe={swipe}
         preventSwipe={["up", "down"]}
       >
-        <div className="card p-4" style={{ width: "300px", height:"60vh", backgroundColor:"#1d1d20", color:"white" }}>
+        <div className="flex justify-center" style={{ width: "300px", height:"60vh", backgroundColor:"#1d1d20", color:"white" }}>
           
-          <div className="badge-pill" style={{backgroundColor}}>
+          <div className="badge-pill" style={{}}>
               <p>Midnight Serenade</p>
+              <p>{user.username}</p>
+              <p>{user.instrument}</p>
+              <p>{user.skillLevel}</p>
           </div>
 
         </div>
