@@ -1,51 +1,50 @@
 import { useState } from "react";
-import { Mail, Lock, Eye, EyeOff, CircleUserRound, FolderPen } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Mail, Lock, Eye, EyeOff, CircleUserIcon, User } from "lucide-react";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import API from "../services/api";
+import { useNavigate } from "react-router-dom";
 
-export default function SignUp() {
-
-    const [username, setUsername] = useState("");
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate()
+  const [username, setUsername] = useState("")
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate= useNavigate();
 
-  const handleSubmit = (e)=>{
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-  }
+  };
 
   const show = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSignUp = async ()=>{
-    try{
-      await API.post("/register", {
+  const handleSignup = async () => {
+    try {
+      const res = await API.post("/register", {
         email,
-        username,
         name,
-        password
+        username,
+        password,
       });
 
-      alert("Signup successful");
-      navigate("/");
-
-    }catch(e){
-      console.error(e);
-      alert("Signup failed")
+      localStorage.setItem("token", res.data.token);
+      navigate("/feed");
+    } catch (e) {
+      console.log(e);
+      alert("Login Failed");
     }
-  }
+  };
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-6 p-0">
-          <div
-            className="d-flex flex-column justify-content-end p-5"
-            style={{
-              backgroundImage: `
+    <>
+      <div className="grid grid-cols-2">
+        <div
+          style={{
+            backgroundImage: `
         linear-gradient(
           to right,
           rgba(7, 6, 6, 0.85) 20%,
@@ -54,123 +53,126 @@ export default function SignUp() {
         ),
         url('/login-bg.jpg')
       `,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: "100vh",
-              width: "100%",
-            }}
-          >
-            <div>
-              <h1 className="text-white fw-bold">Find your</h1>
-              <h1 style={{ color: "#f68523" }} className="fw-bold">
-                perfect jam.
-              </h1>
-              <p className="text-secondary">
-                Connect with musicians near you. Match by genre, skill level,
-                and vibe.
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            height: "100vh",
+            width: "100%",
+          }}
+        >
+          <div className="" style={{ height: "100vh" }}>
+            <div className="flex items-end justify-start h-[100vh] w-full p-4">
+              
+                <p>
+                <p className="text-5xl text-white font-bold">Find your</p>
+                <p
+                  style={{ color: "#f68523" }}
+                  className="text-5xl font-bold my-4"
+                >
+                  perfect jam.
+                </p>
+                <p className="text-zinc-600">
+                  Connect with musicians near you. Match by genre, skill level,
+                  and vibe.
+                </p>
               </p>
             </div>
           </div>
         </div>
+        <></>
         <div
-          className="col-6 d-flex justify-content-center align-items-center"
-          style={{ backgroundColor: "#141213" }}
+          className="flex justify-center"
+          style={{ backgroundColor: "#141213", height: "100vh" }}
         >
-          <div style={{ width: "100%", maxWidth: "400px" }}>
+          <div style={{ width: "100%", maxWidth: "400px" }} className="m-auto">
             <img
               src="/Jam.png"
               alt=""
               style={{ height: "150px", width: "170px" }}
             />
 
-            <h2 className="text-white fw-bold">Welcome</h2>
-            <p className="text-secondary mb-4">
-              Ready to Jam!
+            <h2 className="text-white text-2xl font-bold">Welcome back</h2>
+            <p className="text-xl mb-4 text-zinc-600">
+              Sign in to find your next session
             </p>
 
-            <form onSubmit={handleSubmit} className="needs-validation" noValidate>
-              <div className="mb-3">
-                <label className="form-label text-white">Email</label> &nbsp;&nbsp;
-                <Mail  className="absolute w-4 h-4 mb-2" />
-                <div>
-                  
-                  <input
-                    className="form-control border-color"
-                    placeholder="you@example.com"
-                    type="email"
-                    value={email}
-                    onChange={(e)=>setEmail(e.target.value)}
-                    style={{ backgroundColor: "#27272b", color: "white" }}
-                    required
-                  />
-                </div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              
+              <label htmlFor="email" className="text-white">
+                Email
+              </label>
+              <div className="relative">
+              <Mail className="absolute mt-3 ms-2 text-[#7e8592] z-10"/>
+              <Input
+                id="email"
+                placeholder="you@example.com"
+                className="bg-[#29282b] pr-20 text-white focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring mb-5"
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
               </div>
 
-              <div className="mb-3">
-                <label className="form-label text-white">Name</label> &nbsp;&nbsp;
-                <FolderPen  className="absolute w-4 h-4 mb-2" />
-                <div>
-                  
-                  <input
-                    className="form-control border-color"
-                    placeholder="Enter your name"
-                    type="text"
-                    value={name}
-                    onChange={(e)=>setName(e.target.value)}
-                    style={{ backgroundColor: "#27272b", color: "white" }}
-                    required
-                  />
-                </div>
+              <label htmlFor="name" className="text-white">
+                Name
+              </label>
+              <div className="relative">
+              <User className="absolute mt-3 ms-2 text-[#7e8592] z-10"/>
+              <Input
+                id="name"
+                placeholder="Enter your name"
+                className="bg-[#29282b] pr-20 text-white focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring mb-5"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
               </div>
 
-              <div className="mb-3">
-                <label className="form-label text-white">Username</label> &nbsp;&nbsp;
-                <CircleUserRound  className="absolute w-4 h-4 mb-2" />
-                <div>
-                  
-                  <input
-                    className="form-control border-color"
-                    type="text"
-                    placeholder="Enter your username"
-                    value={username}
-                    onChange={(e)=>setUsername(e.target.value)}
-                    style={{ backgroundColor: "#27272b", color: "white" }}
-                    required
-                  />
-                </div>
+                <label htmlFor="username" className="text-white">
+                Username
+              </label>
+              <div className="relative">
+              <CircleUserIcon className="absolute mt-3 ms-2 text-[#7e8592] z-10"/>
+              <Input
+                id="username"
+                placeholder="Enter your username"
+                className="bg-[#29282b] pr-20 text-white focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring mb-5"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
               </div>
 
-              <label className="form-label text-white">Password</label>&nbsp;&nbsp;
-                <Lock className="absolute w-4 h-4 mb-2" />
-
-              <div className="mb-4 d-flex">
-                
-                  
-                  <input
-                    id="password"
-                    type={showPassword?"text":"password"}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
-                    className="form-control border-color"
-                    required
-                  />
-                  <button type="button" onClick={show} className="btn">
-                    {showPassword ? <EyeOff color="#f68523" className="w-4 h-4" /> : <Eye color="#f68523" className="w-4 h-4" />}
-                  </button>
-              </div>
-
-              <button
-                className="btn w-100"
-                onClick={handleSignUp}
-                style={{ backgroundColor: "#f68523", color: "white" }}
-              >
-                Submit
+                <label htmlFor="password" className="text-white">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute mt-3 text-[#7e8592] ms-2"/>
+                <Input
+                id="password"
+                placeholder="••••••••"
+                className="bg-[#29282b] text-white pr-20 focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button type="button" className="absolute right-3 top-1/3  text-[#7e8592] hover:text-white" onClick={show}>
+                {showPassword ? <EyeOff className="w-4 h-4"/>:<Eye className="w-4 h-4"/>}
               </button>
+              </div>
+              
+
+              <span className="">
+                <Button onClick={handleSignup} className="bg-[#f68523] hover:bg-[rgb(246,133,35)]/75 pr-[18.3vh] pl-[18.3vh] h-12 text-xl font-semibold mt-12" >
+                Sign Up
+              </Button>
+              </span>
             </form>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
+
+
+export default Signup;

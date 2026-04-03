@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Lock, Eye, EyeOff, User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Lock, Eye, EyeOff, CircleUserIcon } from "lucide-react";
 import API from "../services/api";
-import { Input } from "@/components/ui/input";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
 
-export default function Login() {
+const Login = ()=> {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -83,78 +84,52 @@ export default function Login() {
               style={{ height: "150px", width: "170px" }}
             />
 
-            <h2 className="text-white fw-bold">Welcome back</h2>
-            <p className="text-secondary mb-4">
+            <h2 className="text-white text-2xl font-bold">Welcome back</h2>
+            <p className="text-xl mb-4 text-zinc-600">
               Sign in to find your next session
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="space-y-2">
-                <label
-                  className="text-sm font-medium text-foreground"
-                  htmlFor="email"
-                >
-                  Email
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="pl-10 h-12 bg-secondary border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
-                  />
-                </div>
+              
+                <label htmlFor="username" className="text-white">
+                Username
+              </label>
+              <div className="relative">
+              <CircleUserIcon className="absolute mt-3 ms-2 text-[#7e8592] z-10"/>
+              <Input
+                id="username"
+                placeholder="Enter your username"
+                className="bg-[#29282b] pr-20 text-white focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring mb-5"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
               </div>
 
-              <div className="space-y-2">
-                <label
-                  className="text-sm font-medium text-foreground"
-                  htmlFor="password"
-                >
-                  Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 h-12 bg-secondary border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-primary"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {showPassword ?<Eye className="w-4 h-4" />:<EyeOff className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="text-sm text-primary hover:underline"
-                >
-                  Forgot password?
-                </button>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleLogin}
-                className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-[var(--glow-primary)] transition-shadow"
-              >
-                Login
+                <label htmlFor="password" className="text-white">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute mt-3 text-[#7e8592] ms-2"/>
+                <Input
+                id="password"
+                placeholder="••••••••"
+                className="bg-[#29282b] text-white pr-20 focus:outline-[#f68523] border-none pl-10 h-12 border-border placeholder:text-muted-foreground focus-visible:ring"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button type="button" className="absolute right-3 top-1/3  text-[#7e8592] hover:text-white" onClick={show}>
+                {showPassword ? <EyeOff className="w-4 h-4"/>:<Eye className="w-4 h-4"/>}
               </button>
-              <p className="account mt-3">
-                Don't have an account? | <Link to="/signup">Sign up</Link>
-              </p>
+              </div>
+              
+
+              <span className="">
+                <Button onClick={handleLogin} className="bg-[#f68523] hover:bg-[rgb(246,133,35)]/75 pr-[18.3vh] pl-[18.3vh] h-12 text-xl font-semibold mt-12" >
+                Log In
+              </Button>
+              </span>
             </form>
           </div>
         </div>
@@ -162,3 +137,5 @@ export default function Login() {
     </>
   );
 }
+
+export default Login;
