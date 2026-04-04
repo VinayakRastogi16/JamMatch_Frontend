@@ -7,12 +7,11 @@ import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState("")
-  const [name, setName] = useState("")
+  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate= useNavigate();
-
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,8 +60,7 @@ const Signup = () => {
         >
           <div className="" style={{ height: "100vh" }}>
             <div className="flex items-end justify-start h-[100vh] w-full p-4">
-              
-                <p>
+              <p>
                 <p className="text-5xl text-white font-bold">Find your</p>
                 <p
                   style={{ color: "#f68523" }}
@@ -83,11 +81,15 @@ const Signup = () => {
           className="flex justify-center"
           style={{ backgroundColor: "#141213", height: "100vh" }}
         >
-          <div style={{ width: "100%", maxWidth: "400px" }} className="m-auto">
+          <div
+            style={{ width: "100%", maxWidth: "400px" }}
+            className="m-auto relative z-10"
+          >
             <img
-              src="/Jam.png"
-              alt=""
-              style={{ height: "150px", width: "170px" }}
+              src="/image.svg"
+              className="h-full object-contain  "
+              style={{ height: "150px", width: "150px" }}
+              alt="logo"
             />
 
             <h2 className="text-white text-2xl font-bold">Welcome back</h2>
@@ -95,76 +97,92 @@ const Signup = () => {
               Sign in to find your next session
             </p>
 
+            <div
+              className="absolute inset-0 opacity-[0.02]"
+              style={{
+                backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 4px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
+                backgroundSize: "60px 60px",
+              }}
+            />
             <form onSubmit={handleSubmit} className="space-y-5">
-              
               <label htmlFor="email" className="text-white">
                 Email
               </label>
               <div className="relative">
-              <Mail className="absolute mt-3 ms-2 text-[#7e8592] z-10"/>
-              <Input
-                id="email"
-                placeholder="you@example.com"
-                className="bg-[#29282b] pr-20 text-white focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring mb-5"
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+                <Mail className="absolute mt-3 ms-2 text-[#7e8592] z-10" />
+                <Input
+                  id="email"
+                  placeholder="you@example.com"
+                  className="bg-[#29282b] pr-20 text-white focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring mb-5"
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
 
               <label htmlFor="name" className="text-white">
                 Name
               </label>
               <div className="relative">
-              <User className="absolute mt-3 ms-2 text-[#7e8592] z-10"/>
-              <Input
-                id="name"
-                placeholder="Enter your name"
-                className="bg-[#29282b] pr-20 text-white focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring mb-5"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+                <User className="absolute mt-3 ms-2 text-[#7e8592] z-10" />
+                <Input
+                  id="name"
+                  placeholder="Enter your name"
+                  className="bg-[#29282b] pr-20 text-white focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring mb-5"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
 
-                <label htmlFor="username" className="text-white">
+              <label htmlFor="username" className="text-white">
                 Username
               </label>
               <div className="relative">
-              <CircleUserIcon className="absolute mt-3 ms-2 text-[#7e8592] z-10"/>
-              <Input
-                id="username"
-                placeholder="Enter your username"
-                className="bg-[#29282b] pr-20 text-white focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring mb-5"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
+                <CircleUserIcon className="absolute mt-3 ms-2 text-[#7e8592] z-10" />
+                <Input
+                  id="username"
+                  placeholder="Enter your username"
+                  className="bg-[#29282b] pr-20 text-white focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring mb-5"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
 
-                <label htmlFor="password" className="text-white">
+              <label htmlFor="password" className="text-white">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute mt-3 text-[#7e8592] ms-2"/>
+                <Lock className="absolute mt-3 text-[#7e8592] ms-2" />
                 <Input
-                id="password"
-                placeholder="••••••••"
-                className="bg-[#29282b] text-white pr-20 focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button type="button" className="absolute right-3 top-1/3  text-[#7e8592] hover:text-white" onClick={show}>
-                {showPassword ? <EyeOff className="w-4 h-4"/>:<Eye className="w-4 h-4"/>}
-              </button>
+                  id="password"
+                  placeholder="••••••••"
+                  className="bg-[#29282b] text-white pr-20 focus:outline-[#f68523] border-none pl-10 h-12 placeholder:text-muted-foreground focus-visible:ring"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className="absolute right-3 top-1/3  text-[#7e8592] hover:text-white"
+                  onClick={show}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
               </div>
-              
 
               <span className="">
-                <Button onClick={handleSignup} className="bg-[#f68523] hover:bg-[rgb(246,133,35)]/75 pr-[18.3vh] pl-[18.3vh] h-12 text-xl font-semibold mt-12" >
-                Sign Up
-              </Button>
+                <Button
+                  onClick={handleSignup}
+                  className="bg-[#f68523] hover:bg-[rgb(246,133,35)]/75 pr-[18.3vh] pl-[18.3vh] h-12 text-xl font-semibold mt-12"
+                >
+                  Sign Up
+                </Button>
               </span>
             </form>
           </div>
@@ -172,7 +190,6 @@ const Signup = () => {
       </div>
     </>
   );
-}
-
+};
 
 export default Signup;

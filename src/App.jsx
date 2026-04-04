@@ -4,11 +4,13 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Feed from './pages/Feed';
 import Profile from './pages/ProfileForm';
+import Navbar from './NavBar';
 function App() {
 
   return (
-    
+  
   <BrowserRouter>
+  <Navbar/>
   <Routes>
     <Route path='/' element={<Login/>}></Route>
     <Route path='/signup' element={<SignUp/>}></Route>

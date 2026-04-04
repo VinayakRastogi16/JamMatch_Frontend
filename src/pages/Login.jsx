@@ -86,9 +86,16 @@ const Login = ()=> {
 
             <h2 className="text-white text-2xl font-bold">Welcome back</h2>
             <p className="text-xl mb-4 text-zinc-600">
-              Sign in to find your next session
+              Log in to find your next session
             </p>
 
+
+          <div className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 2px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
+            backgroundSize: "60px 60px",
+          }}
+        />
             <form onSubmit={handleSubmit} className="space-y-5">
               
                 <label htmlFor="username" className="text-white">
