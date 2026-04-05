@@ -5,7 +5,7 @@ import { Input } from "../components/ui/input";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = ({setIsSignedIn}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
@@ -31,7 +31,9 @@ const Signup = () => {
       });
 
       localStorage.setItem("token", res.data.token);
-      navigate("/feed");
+      setIsSignedIn(true)
+      navigate("/details");
+
     } catch (e) {
       console.log(e);
       alert("Login Failed");
@@ -77,33 +79,38 @@ const Signup = () => {
           </div>
         </div>
         <></>
+
         <div
-          className="flex justify-center"
-          style={{ backgroundColor: "#141213", height: "100vh" }}
-        >
-          <div
-            style={{ width: "100%", maxWidth: "400px" }}
-            className="m-auto relative z-10"
-          >
-            <img
-              src="/image.svg"
-              className="h-full object-contain  "
-              style={{ height: "150px", width: "150px" }}
-              alt="logo"
-            />
-
-            <h2 className="text-white text-2xl font-bold">Welcome back</h2>
-            <p className="text-xl mb-4 text-zinc-600">
-              Sign in to find your next session
-            </p>
-
-            <div
               className="absolute inset-0 opacity-[0.02]"
               style={{
                 backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 4px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
                 backgroundSize: "60px 60px",
               }}
             />
+        <div
+          className="flex justify-center"
+          style={{ backgroundColor: "#141213", height: "100vh" }}
+        >
+         
+          <div
+            style={{ width: "100%", maxWidth: "400px" }}
+            className="m-auto relative z-10"
+          >
+             
+            <img
+              src="/image.svg"
+              className="h-full object-contain  "
+              style={{ height: "150px", width: "150px" }}
+              alt="logo"
+            />
+            
+
+            <h2 className="text-white text-2xl font-bold">Welcome</h2>
+            <p className="text-xl mb-4 text-zinc-600">
+              Sign Up to vibe with your people
+            </p>
+
+            
             <form onSubmit={handleSubmit} className="space-y-5">
               <label htmlFor="email" className="text-white">
                 Email
