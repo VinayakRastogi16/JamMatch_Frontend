@@ -6,6 +6,7 @@ import Feed from './pages/Feed';
 import Profile from './pages/ProfileForm';
 import Navbar from './NavBar';
 import { useState } from 'react';
+import Protected from './utils/Protected.utils';
 function App() {
 
   const [isSignedIn, setIsSignedIn] = useState(
@@ -16,10 +17,11 @@ function App() {
   <BrowserRouter>
   <Navbar isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}/>
   <Routes>
+
     <Route path='/' element={<Login setIsSignedIn={setIsSignedIn}/>}></Route>
     <Route path='/signup' element={<SignUp setIsSignedIn={setIsSignedIn}/>}></Route>
-    <Route path='/feed' element={<Feed/>}></Route>
-    <Route path='/details' element={<Profile/>}></Route>
+    <Route path='/feed' element={<Protected isSignedIn={isSignedIn}><Feed/></Protected>}></Route>
+    <Route path='/details' element={<Protected isSignedIn={isSignedIn}><Profile/></Protected>}></Route>
     
   </Routes>
   </BrowserRouter>

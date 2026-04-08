@@ -159,14 +159,12 @@ const ProfileForm = () => {
             backgroundSize: "60px 60px",
           }}
         />
-        <Disc3 className="absolute top-[15%] right-[6%] w-12 h-12 text-primary/[0.05] animate-spin-slow" />
+        <Disc3 className="absolute top-[15%] right-[6%] w-12 h-12 text-primary/[0.31] animate-spin" />
         <Headphones
-          className="absolute bottom-[20%] left-[6%] w-8 h-8 text-primary/[0.06] animate-float"
-          style={{ animationDelay: "1s" }}
+          className="absolute bottom-[20%] left-[6%] w-8 h-8 text-primary/[0.31] animate-bounce"
         />
         <Volume2
-          className="absolute top-[50%] right-[12%] w-6 h-6 text-primary/[0.04] animate-float"
-          style={{ animationDelay: "2.5s" }}
+          className="absolute top-[50%] right-[12%] w-6 h-6 text-primary/[0.31] animate-bounce"
         />
       </div>
 
