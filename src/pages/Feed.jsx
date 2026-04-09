@@ -38,20 +38,82 @@ const Feed = () => {
     fetchData();
   }, []);
 
+  const like = async () => {
+
+    console.log("LIKED:");
+    try{
+      const res = await API.post(`/like/${currMatch.user.id}`);
+      console.log(res.data)
+
+      if(res.data.match){
+        alert("It's a match");
+      }
+
+      next();
+
+      
+    } catch(e){
+      console.error(e);
+    }
+  };
+
+  const skip = async () => {
+  try {
+    await API.post(`/skip/${currMatch.user.id}`);
+    next();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
   const next = () => {
     if (currIdx < matches.length - 1) {
-      setCurrIdx(currIdx + 1);
+
+      setCurrIdx((prev)=>{
+        if(prev>=matches.length-1){
+          return prev
+        }
+        return prev+1
+      });
     }
   };
 
-  const prev = () => {
-    if (currIdx > 0) {
-      setCurrIdx(currIdx - 1);
-    }
-  };
+  if(!currMatch || !currMatch.user){
+    return (<div>
+    <div className="fixed inset-0 pointer-events-none overflow-hidden">
+          {/* Stage spotlights */}
+          <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/[0.04] rounded-full blur-[100px]" />
+          <div className="absolute -bottom-40 left-1/4 w-[400px] h-[400px] bg-accent/[0.03] rounded-full blur-[80px]" />
+
+          <div
+            className="absolute inset-0 opacity-[0.02]"
+            style={{
+              backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
+              backgroundSize: "60px 60px",
+            }}
+          />
+<div className="group w-full flex justify-center">
+    <Star className="group flex justify-center fixed place-items-center  top-64 h-32 w-32 p-3 bg-orange-400/20 backdrop-blur-md text-orange-400 animate-pulse rounded-full border">No more users</Star>
+    <span className="group fixed bottom-60 text-2xl font-bold font-mono"><h1>Swipes Complete</h1></span>
+    <span className="group fixed bottom-52 text-xl font-semibold font-mono"><h1>No more users</h1></span>
+
+    </div>
+    </div>
+    <Disc3 className="fixed top-[20%] right-[8%] w-10 h-10 text-primary/[.31] animate-spin" />
+          <Music
+            className="fixed bottom-[30%] left-[8%] w-7 h-7 text-primary/[.31] animate-bounce"
+          />
+          <Headphones
+            className="fixed top-[60%] right-[15%] w-8 h-8 text-primary/[.31] animate-bounce"
+
+          />
+          <Volume2
+            className="fixed top-[40%] left-[12%] w-6 h-6 text-primary/[.31] animate-bounce"
+          />
+    </div>);
+  }
 
   return (
-    <>
       <div className="min-h-screen bg-background font-body flex flex-col overflow-hidden relative place-items-center">
         {/* Ambient background */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -93,13 +155,21 @@ const Feed = () => {
         </div>
 
         {/* CARD */}
-        {currMatch&&<TinderCard
-          onSwipe={(dir) => {
-            if (dir == "left") prev();
-            if (dir == "right") next();
-          }}
-          preventSwipe={["down", "up"]}
+
+          
+
+        <TinderCard
+        key={currMatch?.user?.id||currIdx}
+        onSwipe={(dir)=>{
+          if(dir=="left") skip();
+          if(dir=="right") like();
+        }}
+
+        preventSwipe={["up", "down"]}
+
         >
+        {
+        currMatch&&
           <div className="flex justify-between h-[66vh] w-[44vh] rounded-xl bg-white/10 backdrop-blur z-50 mt-[20vh] left-10">
             <div className="absolute rounded-xl bg-gradient-to-br from-secondary/100 via-accent to-primary/10 h-[18.5vh] w-full bg-white/10">
               <div className="absolute top-0 left-1/4 w-32 h-full bg-gradient-to-tl from-fuchsia-700/30 to-transparent blur-2xl"></div>
@@ -107,39 +177,39 @@ const Feed = () => {
               <div className="absolute top-0 inset-x-0 h-full rounded-t-xl bg-gradient-to-tr from-card to-transparent z-10"></div>
 
               <span
-                class="absolute top-6 left-8 text-2xl opacity-20 animate-bounce"
+                className="absolute top-6 left-8 text-2xl opacity-20 animate-bounce"
                 style={{ animationDelay: "1s" }}
               >
                 ♪
               </span>
               <span
-                class="absolute top-12 right-12 text-lg opacity-15 animate-bounce"
+                className="absolute top-12 right-12 text-lg opacity-15 animate-bounce"
                 style={{ animationDelay: "1s" }}
               >
                 ♫
               </span>
               <span
-                class="absolute bottom-16 left-16 text-xl opacity-10 animate-bounce"
+                className="absolute bottom-16 left-16 text-xl opacity-10 animate-bounce"
                 style={{ animationDelay: "0.5s" }}
               >
                 ♬
               </span>
 
-              <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-6 z-10">
-                <div class="relative w-24 h-24">
-                  <div class="absolute -inset-2 rounded-full bg-primary/10 blur-xl animate-pulse-glow"></div>
-                  <div class="absolute inset-0 rounded-full border-[3px] border-primary/25 animate-spin">
-                    <div class="absolute inset-1 rounded-full border border-primary/10"></div>
-                    <div class="absolute inset-2 rounded-full border border-primary/5"></div>
-                    <div class="absolute inset-3 rounded-full border border-primary/10"></div>
-                    <div class="absolute inset-4 rounded-full border border-primary/5"></div>
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-6 z-10">
+                <div className="relative w-24 h-24">
+                  <div className="absolute -inset-2 rounded-full bg-primary/10 blur-xl animate-pulse-glow"></div>
+                  <div className="absolute inset-0 rounded-full border-[3px] border-primary/25 animate-spin">
+                    <div className="absolute inset-1 rounded-full border border-primary/10"></div>
+                    <div className="absolute inset-2 rounded-full border border-primary/5"></div>
+                    <div className="absolute inset-3 rounded-full border border-primary/10"></div>
+                    <div className="absolute inset-4 rounded-full border border-primary/5"></div>
                   </div>
-                  <span class="flex shrink-0  overflow-hidden rounded-full absolute inset-[16px] w-[64px] h-[64px] border-2 border-primary/40 z-10 ring-2 ring-primary/10 ring-offset-2 ring-offset-card">
-                    <span class="flex h-full w-full items-center justify-center border rounded-full bg-muted bg-gradient-to-br from-primary/30 to-accent/20 text-primary font-heading text-lg font-bold animate-spin">
+                  <span className="flex shrink-0  overflow-hidden rounded-full absolute inset-[16px] w-[64px] h-[64px] border-2 border-primary/40 z-10 ring-2 ring-primary/10 ring-offset-2 ring-offset-card">
+                    <span className="flex h-full w-full items-center justify-center border rounded-full bg-muted bg-gradient-to-br from-primary/30 to-accent/20 text-primary font-heading text-lg font-bold animate-spin">
                       {currMatch.user.name[0]}
                     </span>
                   </span>
-                  {/* <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-primary/70 z-20 shadow-[0_0_8px_hsl(var(--primary)/0.5)]"></div> */}
+                  {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-primary/70 z-20 shadow-[0_0_8px_hsl(var(--primary)/0.5)]"></div> */}
                 </div>
               </div>
             </div>
@@ -247,22 +317,14 @@ const Feed = () => {
               <div className=" w-4 h-8 bg-[#171414] rounded-l-full z-50 mt-[17vh]"></div>
             </div>
           </div>
-        </TinderCard>}
+       }
+       </TinderCard>
 
         <span className="flex mt-5 w-full justify-center relative bottom-0 px-32 mx-36">
-          <button
-            onClick={prev}
-            className="group  relative w-14 h-14 border-2 border-border/60 rounded-full bg-white/10 backdrop-blur-xs flex items-center justify-center transition-all duration-200 hover:border-destructive/50 hover:bg-red-400/5 active:scale-90"
-          >
-            <SkipBack className="w-5 h-5 text-muted-foreground group-hover:text-[#f699ce] transition-colors" />
-            <span className="absolute -bottom-6 text-[12px] text-[#f699ce] font-heading font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-              Back
-            </span>
-          </button>
 
           <button
             className="group mx-10 relative w-14 h-14 border-2 border-border/60 shadow-[var(--glow-primary)] hover:shadow-[0_0_50px_hsl(28_92%_55%/0.45)] rounded-full bg-white/10 backdrop-blur flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 transition-all duration-200 hover:border-destructive/50 hover:bg-orange-400/5 active:scale-90 hover:scale-110"
-            onClick={next}
+            onClick={like}
           >
             <Drum className="w-5 h-5 text-primary-foreground group-hover:scale-110 transition-transform" />
             <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent to-accent/25 opacity-0 group-hover:opacity-100 transition-opacit"></div>
@@ -272,7 +334,7 @@ const Feed = () => {
           </button>
 
           <button
-            onClick={prev}
+            onClick={skip}
             className="group relative w-14 h-14 border-2 border-border/60 rounded-full bg-white/10 backdrop-blur-xs flex items-center justify-center transition-all duration-200 hover:border-destructive/50 hover:bg-red-400/5 active:scale-90"
           >
             <SkipForward className="w-5 h-5 text-muted-foreground group-hover:text-[#ff2321] transition-colors" />
@@ -282,7 +344,6 @@ const Feed = () => {
           </button>
         </span>
       </div>
-    </>
   );
 };
 
