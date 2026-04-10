@@ -16,6 +16,7 @@ export default {
         primary: "hsl(var(--primary))",
         secondary: "hsl(var(--secondary))",
       },
+       
     },
   },
   plugins: [],

@@ -18,10 +18,13 @@ import {
 import { Button } from "../components/ui/button";
 import API from "../services/api";
 import TinderCard from "react-tinder-card";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Feed = () => {
   const [matches, setMatches] = useState([]);
+  const [matchUser, setMatchUser] = useState(null)
   const [currIdx, setCurrIdx] = useState(0);
+  const navigate = useNavigate();
 
   const currMatch = matches[currIdx];
   useEffect(() => {
@@ -46,7 +49,7 @@ const Feed = () => {
       console.log(res.data)
 
       if(res.data.match){
-        alert("It's a match");
+        setMatchUser(currMatch.user)
       }
 
       next();
@@ -94,21 +97,22 @@ const Feed = () => {
           />
 <div className="group w-full flex justify-center">
     <Star className="group flex justify-center fixed place-items-center  top-64 h-32 w-32 p-3 bg-orange-400/20 backdrop-blur-md text-orange-400 animate-pulse rounded-full border">No more users</Star>
-    <span className="group fixed bottom-60 text-2xl font-bold font-mono"><h1>Swipes Complete</h1></span>
+    <span className="group fixed bottom-60 text-2xl font-bold font-mono"><h1>Swipes Completed</h1></span>
     <span className="group fixed bottom-52 text-xl font-semibold font-mono"><h1>No more users</h1></span>
 
     </div>
     </div>
-    <Disc3 className="fixed top-[20%] right-[8%] w-10 h-10 text-primary/[.31] animate-spin" />
+    <Disc3 className="fixed top-[20%] right-[8%] w-10 h-10 text-primary/[.21] animate-spin" />
           <Music
-            className="fixed bottom-[30%] left-[8%] w-7 h-7 text-primary/[.31] animate-bounce"
+            className="fixed bottom-[30%] left-[8%] w-7 h-7 text-primary/[.21] animate-bounce"
           />
           <Headphones
-            className="fixed top-[60%] right-[15%] w-8 h-8 text-primary/[.31] animate-bounce"
+            className="fixed top-[60%] right-[15%] w-8 h-8 text-primary/[.21] animate-bounce"
 
           />
           <Volume2
-            className="fixed top-[40%] left-[12%] w-6 h-6 text-primary/[.31] animate-bounce"
+            className="fixed top-[40%] left-[12%] w-6 h-6 text-primary/[.21] animate-bounce"
+            style={{ animationDelay: "2s" }}
           />
     </div>);
   }
@@ -141,21 +145,44 @@ const Feed = () => {
           {/* Scattered music icons */}
           <Disc3 className="absolute top-[20%] right-[8%] w-10 h-10 text-primary/[.31] animate-spin" />
           <Music
-            className="absolute bottom-[30%] left-[8%] w-7 h-7 text-primary/[.31] animate-bounce"
+            className="absolute bottom-[30%] left-[8%] w-7 h-7 text-primary/[.21] animate-bounce"
             style={{ animationDelay: "0.5s" }}
           />
           <Headphones
-            className="absolute top-[60%] right-[15%] w-8 h-8 text-primary/[.31] animate-bounce"
+            className="absolute top-[60%] right-[15%] w-8 h-8 text-primary/[.21] animate-bounce"
             style={{ animationDelay: "1.5s" }}
           />
           <Volume2
-            className="absolute top-[40%] left-[12%] w-6 h-6 text-primary/[.31] animate-bounce"
+            className="absolute top-[40%] left-[12%] w-6 h-6 text-primary/[.21] animate-bounce"
             style={{ animationDelay: "2s" }}
           />
         </div>
 
         {/* CARD */}
 
+        {matchUser&&
+          <div className="flex justify-center bg-black/80 fixed inset-0 flex-col items-center z-[999]">
+            <h1 className="text-4xl text-white font-bold mb-4">
+              🎉 It's a Match 🎉
+            </h1>
+
+            <p className="mb-3">You matched with <b>{matchUser.username}</b></p>
+
+            <div className="flex gap-4">
+              <button className="bg-green-500 px-6 py-2 rounded-lg text-white" 
+              onClick={()=>{navigate(`/jam/${matchUser.id}`)}}
+              >Start Jam</button>
+
+              <button
+              className="bg-gray-500 px-6 py-2 rounded-lg text-white"
+              onClick={()=>{
+                setMatchUser(null);
+              }}
+              >Close</button>
+            </div>
+
+          </div>
+        }
           
 
         <TinderCard
@@ -320,18 +347,7 @@ const Feed = () => {
        }
        </TinderCard>
 
-        <span className="flex mt-5 w-full justify-center relative bottom-0 px-32 mx-36">
-
-          <button
-            className="group mx-10 relative w-14 h-14 border-2 border-border/60 shadow-[var(--glow-primary)] hover:shadow-[0_0_50px_hsl(28_92%_55%/0.45)] rounded-full bg-white/10 backdrop-blur flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 transition-all duration-200 hover:border-destructive/50 hover:bg-orange-400/5 active:scale-90 hover:scale-110"
-            onClick={like}
-          >
-            <Drum className="w-5 h-5 text-primary-foreground group-hover:scale-110 transition-transform" />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent to-accent/25 opacity-0 group-hover:opacity-100 transition-opacit"></div>
-            <span className="absolute -bottom-6 text-[12px] text-primary font-heading font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-              JAM!
-            </span>
-          </button>
+        <span className="flex mt-5 w-full gap-20 justify-center relative bottom-0 mx-36">
 
           <button
             onClick={skip}
@@ -342,6 +358,19 @@ const Feed = () => {
               Skip!
             </span>
           </button>
+
+          <button
+            className="group  relative w-14 h-14 border-2 border-border/60 shadow-[var(--glow-primary)] hover:shadow-[0_0_50px_hsl(28_92%_55%/0.45)] rounded-full bg-white/10 backdrop-blur flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 transition-all duration-200 hover:border-destructive/50 hover:bg-orange-400/5 active:scale-90 hover:scale-110"
+            onClick={like}
+          >
+            <Drum className="w-5 h-5 text-primary-foreground group-hover:scale-110 transition-transform" />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent to-accent/25 opacity-0 group-hover:opacity-100 transition-opacit"></div>
+            <span className="absolute -bottom-6 text-[12px] text-primary font-heading font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+              JAM!
+            </span>
+          </button>
+
+          
         </span>
       </div>
   );
