@@ -5,6 +5,7 @@ import SignUp from './pages/SignUp';
 import Feed from './pages/Feed';
 import Profile from './pages/ProfileForm';
 import Navbar from './NavBar';
+import Jam from './pages/Jam';
 import { useState } from 'react';
 import Protected from './utils/Protected.utils';
 function App() {
@@ -22,6 +23,7 @@ function App() {
     <Route path='/signup' element={<SignUp setIsSignedIn={setIsSignedIn}/>}></Route>
     <Route path='/feed' element={<Protected isSignedIn={isSignedIn}><Feed/></Protected>}></Route>
     <Route path='/details' element={<Protected isSignedIn={isSignedIn}><Profile/></Protected>}></Route>
+    <Route path='/jam/:id' element={<Jam/>}/>
     
   </Routes>
   </BrowserRouter>
