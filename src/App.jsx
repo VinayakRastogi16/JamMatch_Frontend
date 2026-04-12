@@ -23,7 +23,7 @@ function App() {
     <Route path='/signup' element={<SignUp setIsSignedIn={setIsSignedIn}/>}></Route>
     <Route path='/feed' element={<Protected isSignedIn={isSignedIn}><Feed/></Protected>}></Route>
     <Route path='/details' element={<Protected isSignedIn={isSignedIn}><Profile/></Protected>}></Route>
-    <Route path='/jam/:id' element={<Jam/>}/>
+    <Route path='/jam/:id' element={<Protected isSignedIn={isSignedIn}><Jam/></Protected>}/>
     
   </Routes>
   </BrowserRouter>

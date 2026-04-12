@@ -95,7 +95,7 @@ const Feed = () => {
               backgroundSize: "60px 60px",
             }}
           />
-<div className="group w-full flex justify-center">
+<div className="group w-full flex relative justify-center">
     <Star className="group flex justify-center fixed place-items-center  top-64 h-32 w-32 p-3 bg-orange-400/20 backdrop-blur-md text-orange-400 animate-pulse rounded-full border">No more users</Star>
     <span className="group fixed bottom-60 text-2xl font-bold font-mono"><h1>Swipes Completed</h1></span>
     <span className="group fixed bottom-52 text-xl font-semibold font-mono"><h1>No more users</h1></span>
