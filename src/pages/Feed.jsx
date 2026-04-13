@@ -19,10 +19,11 @@ import { Button } from "../components/ui/button";
 import API from "../services/api";
 import TinderCard from "react-tinder-card";
 import { Navigate, useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
 
 const Feed = () => {
   const [matches, setMatches] = useState([]);
-  const [matchUser, setMatchUser] = useState(null)
+  const [matchUser, setMatchUser] = useState(null);
   const [currIdx, setCurrIdx] = useState(0);
   const navigate = useNavigate();
 
@@ -41,91 +42,54 @@ const Feed = () => {
     fetchData();
   }, []);
 
+  const generateRoom = (id1, id2) => {
+    return [id1, id2].sort().join("_");
+  };
+
   const like = async () => {
-
     console.log("LIKED:");
-    try{
+    try {
       const res = await API.post(`/like/${currMatch.user.id}`);
-      console.log(res.data)
+      console.log(res.data);
 
-      if(res.data.match){
-        setMatchUser(currMatch.user)
+      if (res.data.match) {
+        setMatchUser(currMatch.user);
       }
 
       next();
-
-      
-    } catch(e){
+    } catch (e) {
       console.error(e);
     }
   };
 
   const skip = async () => {
-  try {
-    await API.post(`/skip/${currMatch.user.id}`);
-    next();
-  } catch (e) {
-    console.error(e);
-  }
-};
+    try {
+      await API.post(`/skip/${currMatch.user.id}`);
+      next();
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const next = () => {
     if (currIdx < matches.length - 1) {
-
-      setCurrIdx((prev)=>{
-        if(prev>=matches.length-1){
-          return prev
+      setCurrIdx((prev) => {
+        if (prev >= matches.length - 1) {
+          return prev;
         }
-        return prev+1
+        return prev + 1;
       });
     }
   };
 
-  if(!currMatch || !currMatch.user){
-    return (<div>
-    <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          {/* Stage spotlights */}
-          <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/[0.04] rounded-full blur-[100px]" />
-          <div className="absolute -bottom-40 left-1/4 w-[400px] h-[400px] bg-accent/[0.03] rounded-full blur-[80px]" />
-
-          <div
-            className="absolute inset-0 opacity-[0.02]"
-            style={{
-              backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
-              backgroundSize: "60px 60px",
-            }}
-          />
-<div className="group w-full flex relative justify-center">
-    <Star className="group flex justify-center fixed place-items-center  top-64 h-32 w-32 p-3 bg-orange-400/20 backdrop-blur-md text-orange-400 animate-pulse rounded-full border">No more users</Star>
-    <span className="group fixed bottom-60 text-2xl font-bold font-mono"><h1>Swipes Completed</h1></span>
-    <span className="group fixed bottom-52 text-xl font-semibold font-mono"><h1>No more users</h1></span>
-
-    </div>
-    </div>
-    <Disc3 className="fixed top-[20%] right-[8%] w-10 h-10 text-primary/[.21] animate-spin" />
-          <Music
-            className="fixed bottom-[30%] left-[8%] w-7 h-7 text-primary/[.21] animate-bounce"
-          />
-          <Headphones
-            className="fixed top-[60%] right-[15%] w-8 h-8 text-primary/[.21] animate-bounce"
-
-          />
-          <Volume2
-            className="fixed top-[40%] left-[12%] w-6 h-6 text-primary/[.21] animate-bounce"
-            style={{ animationDelay: "2s" }}
-          />
-    </div>);
-  }
-
-  return (
-      <div className="min-h-screen bg-background font-body flex flex-col overflow-hidden relative place-items-center">
-        {/* Ambient background */}
+  if (!currMatch || !currMatch.user) {
+    return (
+      <div>
         <div className="fixed inset-0 pointer-events-none overflow-hidden">
           {/* Stage spotlights */}
           <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/[0.04] rounded-full blur-[100px]" />
           <div className="absolute -bottom-40 left-1/4 w-[400px] h-[400px] bg-accent/[0.03] rounded-full blur-[80px]" />
 
-          {/* Grid lines like a mixing board */}
           <div
             className="absolute inset-0 opacity-[0.02]"
             style={{
@@ -133,70 +97,124 @@ const Feed = () => {
               backgroundSize: "60px 60px",
             }}
           />
-          <div
-            className="absolute -top-16 -right-16 w-56 h-56 rounded-full border border-primary/[0.06] animate-spin-slow"
-            style={{ animationDuration: "40s" }}
-          >
-            <div className="absolute inset-6 rounded-full border border-primary/[0.04]" />
-            <div className="absolute inset-12 rounded-full border border-primary/[0.03]" />
-            <div className="absolute inset-20 rounded-full bg-primary/[0.04]" />
+          <div className="group w-full flex relative justify-center">
+            <Star className="group flex justify-center fixed place-items-center  top-64 h-32 w-32 p-3 bg-orange-400/20 backdrop-blur-md text-orange-400 animate-pulse rounded-full border">
+              No more users
+            </Star>
+            <span className="group fixed bottom-60 text-2xl font-bold font-mono">
+              <h1>Swipes Completed</h1>
+            </span>
+            <span className="group fixed bottom-52 text-xl font-semibold font-mono">
+              <h1>No more users</h1>
+            </span>
           </div>
+        </div>
+        <Disc3 className="fixed top-[20%] right-[8%] w-10 h-10 text-primary/[.21] animate-spin" />
+        <Music className="fixed bottom-[30%] left-[8%] w-7 h-7 text-primary/[.21] animate-bounce" />
+        <Headphones className="fixed top-[60%] right-[15%] w-8 h-8 text-primary/[.21] animate-bounce" />
+        <Volume2
+          className="fixed top-[40%] left-[12%] w-6 h-6 text-primary/[.21] animate-bounce"
+          style={{ animationDelay: "2s" }}
+        />
+      </div>
+    );
+  }
 
-          {/* Scattered music icons */}
-          <Disc3 className="absolute top-[20%] right-[8%] w-10 h-10 text-primary/[.31] animate-spin" />
-          <Music
-            className="absolute bottom-[30%] left-[8%] w-7 h-7 text-primary/[.21] animate-bounce"
-            style={{ animationDelay: "0.5s" }}
-          />
-          <Headphones
-            className="absolute top-[60%] right-[15%] w-8 h-8 text-primary/[.21] animate-bounce"
-            style={{ animationDelay: "1.5s" }}
-          />
-          <Volume2
-            className="absolute top-[40%] left-[12%] w-6 h-6 text-primary/[.21] animate-bounce"
-            style={{ animationDelay: "2s" }}
-          />
+  return (
+    <div className="min-h-screen bg-background font-body flex flex-col overflow-hidden relative place-items-center">
+      {/* Ambient background */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        {/* Stage spotlights */}
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/[0.04] rounded-full blur-[100px]" />
+        <div className="absolute -bottom-40 left-1/4 w-[400px] h-[400px] bg-accent/[0.03] rounded-full blur-[80px]" />
+
+        {/* Grid lines like a mixing board */}
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)`,
+            backgroundSize: "60px 60px",
+          }}
+        />
+        <div
+          className="absolute -top-16 -right-16 w-56 h-56 rounded-full border border-primary/[0.06] animate-spin-slow"
+          style={{ animationDuration: "40s" }}
+        >
+          <div className="absolute inset-6 rounded-full border border-primary/[0.04]" />
+          <div className="absolute inset-12 rounded-full border border-primary/[0.03]" />
+          <div className="absolute inset-20 rounded-full bg-primary/[0.04]" />
         </div>
 
-        {/* CARD */}
+        {/* Scattered music icons */}
+        <Disc3 className="absolute top-[20%] right-[8%] w-10 h-10 text-primary/[.31] animate-spin" />
+        <Music
+          className="absolute bottom-[30%] left-[8%] w-7 h-7 text-primary/[.21] animate-bounce"
+          style={{ animationDelay: "0.5s" }}
+        />
+        <Headphones
+          className="absolute top-[60%] right-[15%] w-8 h-8 text-primary/[.21] animate-bounce"
+          style={{ animationDelay: "1.5s" }}
+        />
+        <Volume2
+          className="absolute top-[40%] left-[12%] w-6 h-6 text-primary/[.21] animate-bounce"
+          style={{ animationDelay: "2s" }}
+        />
+      </div>
 
-        {matchUser&&
-          <div className="flex justify-center bg-black/80 fixed inset-0 flex-col items-center z-[999]">
-            <h1 className="text-4xl text-white font-bold mb-4">
-              🎉 It's a Match 🎉
-            </h1>
+      {/* CARD */}
 
-            <p className="mb-3">You matched with <b>{matchUser.username}</b></p>
+      {matchUser && (
+        <div className="flex justify-center bg-black/80 fixed inset-0 flex-col items-center z-[999]">
+          <h1 className="text-4xl text-white font-bold mb-4">
+            🎉 It's a Match 🎉
+          </h1>
 
-            <div className="flex gap-4">
-              <button className="bg-green-500 px-6 py-2 rounded-lg text-white" 
-              onClick={()=>{navigate(`/jam/${matchUser.id}`)}}
-              >Start Jam</button>
+          <p className="mb-3">
+            You matched with <b>{matchUser.username}</b>
+          </p>
 
-              <button
+          <div className="flex gap-4">
+            <button
+              className="bg-green-500 px-6 py-2 rounded-lg text-white"
+              onClick={() => {
+                const token = localStorage.getItem("token");
+
+                if(!token){
+                  console.error("No token");
+                  return;
+                }
+                const decode = jwtDecode(token);
+                // console.log(decode.userId)
+                const currUserId = decode.userId;
+                const roomId = generateRoom(currUserId, matchUser.id);
+
+                navigate(`/jam/${roomId}`);
+              }}
+            >
+              Start Jam
+            </button>
+
+            <button
               className="bg-gray-500 px-6 py-2 rounded-lg text-white"
-              onClick={()=>{
+              onClick={() => {
                 setMatchUser(null);
               }}
-              >Close</button>
-            </div>
-
+            >
+              Close
+            </button>
           </div>
-        }
-          
+        </div>
+      )}
 
-        <TinderCard
-        key={currMatch?.user?.id||currIdx}
-        onSwipe={(dir)=>{
-          if(dir=="left") skip();
-          if(dir=="right") like();
+      <TinderCard
+        key={currMatch?.user?.id || currIdx}
+        onSwipe={(dir) => {
+          if (dir == "left") skip();
+          if (dir == "right") like();
         }}
-
         preventSwipe={["up", "down"]}
-
-        >
-        {
-        currMatch&&
+      >
+        {currMatch && (
           <div className="flex justify-between h-[66vh] w-[44vh] rounded-xl bg-white/10 backdrop-blur z-50 mt-[20vh] left-10">
             <div className="absolute rounded-xl bg-gradient-to-br from-secondary/100 via-accent to-primary/10 h-[18.5vh] w-full bg-white/10">
               <div className="absolute top-0 left-1/4 w-32 h-full bg-gradient-to-tl from-fuchsia-700/30 to-transparent blur-2xl"></div>
@@ -344,35 +362,32 @@ const Feed = () => {
               <div className=" w-4 h-8 bg-[#171414] rounded-l-full z-50 mt-[17vh]"></div>
             </div>
           </div>
-       }
-       </TinderCard>
+        )}
+      </TinderCard>
 
-        <span className="flex mt-5 w-full gap-20 justify-center relative bottom-0 mx-36">
+      <span className="flex mt-5 w-full gap-20 justify-center relative bottom-0 mx-36">
+        <button
+          onClick={skip}
+          className="group relative w-14 h-14 border-2 border-border/60 rounded-full bg-white/10 backdrop-blur-xs flex items-center justify-center transition-all duration-200 hover:border-destructive/50 hover:bg-red-400/5 active:scale-90"
+        >
+          <SkipForward className="w-5 h-5 text-muted-foreground group-hover:text-[#ff2321] transition-colors" />
+          <span className="absolute -bottom-6 text-[12px] text-[#ff2321] font-heading font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+            Skip!
+          </span>
+        </button>
 
-          <button
-            onClick={skip}
-            className="group relative w-14 h-14 border-2 border-border/60 rounded-full bg-white/10 backdrop-blur-xs flex items-center justify-center transition-all duration-200 hover:border-destructive/50 hover:bg-red-400/5 active:scale-90"
-          >
-            <SkipForward className="w-5 h-5 text-muted-foreground group-hover:text-[#ff2321] transition-colors" />
-            <span className="absolute -bottom-6 text-[12px] text-[#ff2321] font-heading font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-              Skip!
-            </span>
-          </button>
-
-          <button
-            className="group  relative w-14 h-14 border-2 border-border/60 shadow-[var(--glow-primary)] hover:shadow-[0_0_50px_hsl(28_92%_55%/0.45)] rounded-full bg-white/10 backdrop-blur flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 transition-all duration-200 hover:border-destructive/50 hover:bg-orange-400/5 active:scale-90 hover:scale-110"
-            onClick={like}
-          >
-            <Drum className="w-5 h-5 text-primary-foreground group-hover:scale-110 transition-transform" />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent to-accent/25 opacity-0 group-hover:opacity-100 transition-opacit"></div>
-            <span className="absolute -bottom-6 text-[12px] text-primary font-heading font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-              JAM!
-            </span>
-          </button>
-
-          
-        </span>
-      </div>
+        <button
+          className="group  relative w-14 h-14 border-2 border-border/60 shadow-[var(--glow-primary)] hover:shadow-[0_0_50px_hsl(28_92%_55%/0.45)] rounded-full bg-white/10 backdrop-blur flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 transition-all duration-200 hover:border-destructive/50 hover:bg-orange-400/5 active:scale-90 hover:scale-110"
+          onClick={like}
+        >
+          <Drum className="w-5 h-5 text-primary-foreground group-hover:scale-110 transition-transform" />
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent to-accent/25 opacity-0 group-hover:opacity-100 transition-opacit"></div>
+          <span className="absolute -bottom-6 text-[12px] text-primary font-heading font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+            JAM!
+          </span>
+        </button>
+      </span>
+    </div>
   );
 };
 
