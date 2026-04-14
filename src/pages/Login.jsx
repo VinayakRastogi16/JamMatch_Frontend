@@ -4,6 +4,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import API from "../services/api";
 import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
 
 const Login = ({setIsSignedIn}) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +14,7 @@ const Login = ({setIsSignedIn}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    handleLogin();
   };
 
   const show = () => {
@@ -27,8 +29,18 @@ const Login = ({setIsSignedIn}) => {
       });
 
       localStorage.setItem("token", res.data.token);
+      const decode = jwtDecode(res.data.token)
+      console.log(decode)
       setIsSignedIn(true);
+
+      const profileCompleted = decode.profileCompleted;
+
+      if(profileCompleted){
+        navigate("/details")
+      }else{
       navigate("/feed");
+      }
+
       
     } catch (e) {
       console.log(e);
