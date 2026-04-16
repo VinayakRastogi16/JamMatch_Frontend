@@ -1,5 +1,4 @@
 import { Navigate } from "react-router-dom";
-import Protected from './Protected.utils';
 
 
 const Protected = ({children, allowIncomplete = false})=>{
@@ -14,7 +13,6 @@ const Protected = ({children, allowIncomplete = false})=>{
     console.error(e);
     return <Navigate to="/" replace/>;
   }
-}
 
   if (!user || !user.token) return <Navigate to="/" replace />;
   if (!user.profileCompleted && !allowIncomplete) return <Navigate to="/details" replace />;
