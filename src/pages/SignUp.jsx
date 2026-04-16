@@ -30,7 +30,10 @@ const Signup = ({setIsSignedIn}) => {
         password,
       });
 
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify({
+        token: res.data.token,
+        profileCompleted: false
+      }));
       setIsSignedIn(true)
       navigate("/details");
 

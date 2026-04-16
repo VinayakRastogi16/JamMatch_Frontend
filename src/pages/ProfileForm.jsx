@@ -138,7 +138,14 @@ const ProfileForm = () => {
       age: Number(form.age),
       location: form.location.trim(),
       bio: form.bio.trim(),
+      profileCompleted:true
     });
+
+    const existing = JSON.parse(localStorage.getItem("user")||"{}");
+    localStorage.setItem("user", JSON.stringify({
+      ...existing,
+      profileCompleted:true,
+    }))
 
     navigate("/feed");
   } catch (e) {

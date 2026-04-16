@@ -5,7 +5,8 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((req)=>{
-    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user?.token;
     
     if(token){
         req.headers.Authorization = token;
