@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {BrowserRouter, Routes, Route, useLocation} from "react-router-dom";
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Feed from './pages/Feed';
@@ -8,9 +8,9 @@ import Navbar from './NavBar';
 import Jam from './pages/Jam';
 import { useState } from 'react';
 import Protected from './utils/Protected.utils';
-function App() {
+import Chat from './components/SideChat';
 
-  const getIsSignedIn = () => {
+const getIsSignedIn = () => {
   try {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user?.token) return false;
@@ -26,25 +26,39 @@ function App() {
   } catch {
     return false;
   }
-};
+}
+
+function AppComponent({isSignedIn, setIsSignedIn}){
+  const location = useLocation();
+  const hideNav = location.pathname.startsWith("/messages")||location.pathname.startsWith("/jam")
+
+  return(
+    <>
+    {!hideNav && <Navbar isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}/>}
+      <Routes>
+        <Route path='/' element={<Login setIsSignedIn={setIsSignedIn} />} />
+        <Route path='/signup' element={<SignUp setIsSignedIn={setIsSignedIn} />} />
+        <Route path='/feed' element={<Protected><Feed /></Protected>} />
+        <Route path='/details' element={<Protected allowIncomplete={true}><Profile /></Protected>} />
+        <Route path='/jam/:id' element={<Protected><Jam /></Protected>} />
+        <Route path='/messages' element={<Protected><Chat /></Protected>} />
+      </Routes>
+
+    </>
+  )
+}
+
+
+function App() {
 
 const [isSignedIn, setIsSignedIn] = useState(getIsSignedIn);
   return (
   
   <BrowserRouter>
-  <Navbar isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}/>
-  <Routes>
-
-    <Route path='/' element={<Login setIsSignedIn={setIsSignedIn}/>}></Route>
-    <Route path='/signup' element={<SignUp setIsSignedIn={setIsSignedIn}/>}></Route>
-    <Route path='/feed' element={<Protected><Feed/></Protected>}></Route>
-    <Route path='/details' element={<Protected allowIncomplete={true}><Profile/></Protected>}></Route>
-    <Route path='/jam/:id' element={<Protected isSignedIn={isSignedIn}><Jam/></Protected>}/>
-    
-  </Routes>
+    <AppComponent isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}/>
   </BrowserRouter>
   )
 }
 
 
-export default App
+export default App;
