@@ -21,7 +21,7 @@ export default function Chat() {
     socketRef.current = io("http://localhost:8080");
     socketRef.current.emit("join-room", roomId);
 
-    socketRef.current.on("receive-message", (msg) => {
+    socketRef.current.on("receive-message", (msg) =>{
       setMessages((prev) => [...prev, msg]);
     });
 
@@ -36,7 +36,7 @@ export default function Chat() {
   const sendMessage = () => {
     if (!input.trim()) return;
 
-    socketRef.current.emit("send-message", {
+    socketRef.current.emit("send-message",{
       roomId,
       senderId: currentUser.id,
       text: input.trim(),
