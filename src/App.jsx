@@ -41,7 +41,7 @@ function AppComponent({isSignedIn, setIsSignedIn}){
         <Route path='/feed' element={<Protected><Feed /></Protected>} />
         <Route path='/details' element={<Protected allowIncomplete={true}><Profile /></Protected>} />
         <Route path='/jam/:id' element={<Protected><Jam /></Protected>} />
-        <Route path='/messages' element={<Protected><Chat /></Protected>} />
+        <Route path='/messages/:id' element={<Protected><Chat /></Protected>} />
       </Routes>
 
     </>

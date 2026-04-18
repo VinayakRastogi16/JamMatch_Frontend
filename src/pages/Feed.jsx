@@ -19,13 +19,14 @@ import { Button } from "../components/ui/button";
 import API from "../services/api";
 import TinderCard from "react-tinder-card";
 import { Navigate, useNavigate } from "react-router-dom";
-import { jwtDecode } from 'jwt-decode';
+// import { jwtDecode } from "jwt-decode";
 
 const Feed = () => {
   const [matches, setMatches] = useState([]);
   const [matchUser, setMatchUser] = useState(null);
   const [currIdx, setCurrIdx] = useState(0);
   const navigate = useNavigate();
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
   const currMatch = matches[currIdx];
   useEffect(() => {
@@ -177,21 +178,11 @@ const Feed = () => {
             <button
               className="bg-green-500 px-6 py-2 rounded-lg text-white"
               onClick={() => {
-                const token = localStorage.getItem("token");
-
-                if(!token){
-                  console.error("No token");
-                  return;
-                }
-                const decode = jwtDecode(token);
-                // console.log(decode.userId)
-                const currUserId = decode.userId;
-                const roomId = generateRoom(currUserId, matchUser.id);
-
-                navigate(`/jam/${roomId}`);
+                const currUserId = currentUser.id; // currentUser already parsed at top of Feed
+                navigate(`/messages/${generateRoom(currUserId, matchUser.id)}`);
               }}
             >
-              Start Jam
+              Start Chat
             </button>
 
             <button
