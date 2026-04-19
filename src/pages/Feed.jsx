@@ -19,14 +19,15 @@ import { Button } from "../components/ui/button";
 import API from "../services/api";
 import TinderCard from "react-tinder-card";
 import { Navigate, useNavigate } from "react-router-dom";
-// import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 
 const Feed = () => {
   const [matches, setMatches] = useState([]);
   const [matchUser, setMatchUser] = useState(null);
   const [currIdx, setCurrIdx] = useState(0);
   const navigate = useNavigate();
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+
+  const currUser = JSON.parse(localStorage.getItem("user"))
 
   const currMatch = matches[currIdx];
   useEffect(() => {
@@ -178,8 +179,8 @@ const Feed = () => {
             <button
               className="bg-green-500 px-6 py-2 rounded-lg text-white"
               onClick={() => {
-                const currUserId = currentUser.id; // currentUser already parsed at top of Feed
-                navigate(`/messages/${generateRoom(currUserId, matchUser.id)}`);
+                const roomId = generateRoom(currUser.id, matchUser.id);
+                navigate(`/messages/${roomId}`)
               }}
             >
               Start Chat

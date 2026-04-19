@@ -29,7 +29,8 @@ const Login = ({setIsSignedIn}) => {
 
       localStorage.setItem("user", JSON.stringify({
         token: res.data.token,
-        profileCompleted: res.data.user.profileCompleted
+        profileCompleted: res.data.user.profileCompleted,
+        id: res.data.user.id,
       }));
       console.log(res.data.user.profileCompleted)
       setIsSignedIn(true);

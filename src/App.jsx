@@ -4,11 +4,11 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Feed from './pages/Feed';
 import Profile from './pages/ProfileForm';
-import Navbar from './NavBar';
+import Navbar from './components/NavBar';
 import Jam from './pages/Jam';
 import { useState } from 'react';
 import Protected from './utils/Protected.utils';
-import Chat from './components/SideChat';
+import Chat from "./pages/Chat"
 
 const getIsSignedIn = () => {
   try {
@@ -41,7 +41,8 @@ function AppComponent({isSignedIn, setIsSignedIn}){
         <Route path='/feed' element={<Protected><Feed /></Protected>} />
         <Route path='/details' element={<Protected allowIncomplete={true}><Profile /></Protected>} />
         <Route path='/jam/:id' element={<Protected><Jam /></Protected>} />
-        <Route path='/messages/:id' element={<Protected><Chat /></Protected>} />
+        <Route path='/messages' element={<Protected><Chat /></Protected>} />
+        <Route path='/messages/:roomId' element={<Protected><Chat /></Protected>} />
       </Routes>
 
     </>
