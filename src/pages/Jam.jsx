@@ -156,7 +156,7 @@ export default function Jam() {
       <br /><br />
 
       <button
-        onClick={() => navigate("/feed")}
+        onClick={() => navigate(`/messages/${roomId}`)}
         style={{ background: "red", color: "white", padding: "10px" }}
       >
         Leave

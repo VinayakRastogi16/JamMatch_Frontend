@@ -1,4 +1,4 @@
-import { Guitar, Send, Music2 } from "lucide-react";
+import { Guitar, Send, Music2, Phone, Video } from "lucide-react";
 import ChatMessage from "./ChatMessage.jsx";
 
 const ChatWindow = ({
@@ -30,16 +30,24 @@ const ChatWindow = ({
             </p>
           </div>
         </div>
+        <div>
+          <button onClick={()=>{
+          navigate(`/jam/${activeRoom}`)
+        }}
+        className="px-4 py-2 rounded-full text-primary-foreground transition-all text-sm font-semibold font-heading hover:bg-primary/85 shadow-[var(--glow-primary)]"
+        ><Phone/></button>
+
         <button onClick={()=>{
           navigate(`/jam/${activeRoom}`)
         }}
-        className="px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold font-heading hover:bg-primary/85 shadow-[var(--glow-primary)]"
-        >🎸 Start Jam</button>
+        className="px-4 py-2 rounded-full text-primary-foreground transition-all text-sm font-semibold font-heading hover:bg-primary/85 shadow-[var(--glow-primary)]"
+        ><Video/></button>
+        </div>
       </div>
 
 
 
-      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-3">
+      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-3 custom-scrollbar">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
             <Music2 className="w-8 h-8 opacity-30" />

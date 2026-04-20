@@ -36,14 +36,14 @@ export function DropdownMenuAvatar({setIsSignedIn}) {
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none">
         <Button variant="ghost" size="icon" className="rounded-full">
-          <Avatar>
+          <Avatar className="hover:opacity-75">
             <AvatarImage src="https://github.com/shadcn.png" alt="shadcn" />
             <AvatarFallback>LR</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       
-      <DropdownMenuContent className="backdrop-blur-lg backdrop-grayscale bg-white/10 mt-4 mr-10 rounded-xl" align="start">
+      <DropdownMenuContent className="backdrop-blur-lg backdrop-grayscale bg-white/10 mt-4 mr-10 rounded-3xl" align="start">
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <BadgeCheckIcon />
