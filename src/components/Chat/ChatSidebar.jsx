@@ -1,4 +1,5 @@
-import { Guitar, Music2 } from "lucide-react";
+import { Guitar, Music2, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ChatSideBar = ({
   filteredMatches,
@@ -8,12 +9,20 @@ const ChatSideBar = ({
   selectMatch,
   generateRoom,
   currentUser,
+  onlineUsers
 }) => {
   return (
-    <div className="w-72 border-r border-border/50 bg-card/60 backdrop-blur-xl flex flex-col">
-      <div className="px-5 py-5 border-b border-border/50">
+    <div className="w-72 border-r border-border/50 bg-card/60 backdrop-blur-xl justify-center flex flex-col">
+      <div className="px-5 py-5 border-b border-border/50 flex flex-col">
+      <div className="flex flex-col items-start gap-5">
+        <div className="flex gap-5">
+          <Link to="/feed"><ArrowLeft className="bg-primary rounded-full hover:bg-primary/50"/></Link>
         <h1 className="font-heading font-bold text-xl text-foreground">Messages</h1>
-        <p className="text-xs text-muted-foreground mt-0.5">Your matched musicians</p>
+        </div>
+        
+        <p className="text-xs text-muted-foreground mt-0.5 ms-5">Your matched musicians</p>
+      </div>
+        
       </div>
 
       <div className="px-4 py-3">
@@ -27,7 +36,7 @@ const ChatSideBar = ({
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {filteredMatches === 0 && (
+        {filteredMatches.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground px-6 text-center">
             <Music2 className="w-8 h-8 mb-2 opacity-30" />
             <p className="text-sm">
@@ -47,15 +56,25 @@ const ChatSideBar = ({
                 isActive? "bg-primary/10 border-r-2 border-primary" :""
                 }`}
             >
+            <div className="relative">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-accent/20 border border-primary/30 flex items-center justify-center shrink-0">
                 <span className="font-heading font-bold text-primary text-sm">{user.name?.[0]?.toUpperCase()}</span>
               </div>
+
+              {onlineUsers?.includes(user.id.toString())&& (<span className = "absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-background"/>)}
+            </div>
+
 
               <div className="flex-1 text-left overflow-hidden">
                 <p className="font-heading font-semibold text-sm text-foreground truncate">{user.name}</p>
                 <p className="text-xs text-muted-forground truncate flex items-center gap-1">
                   <Guitar className="w-3 h-3" />
-                  {user.instrument?.[0] || "Musician"}
+
+
+                  {onlineUsers?.includes(user.id.toString())
+        ? <span className="text-green-500">Online</span>
+        : user.instrument?.[0] || "Musician"
+      }
                 </p>
               </div>
             </button>

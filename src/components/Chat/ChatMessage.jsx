@@ -1,8 +1,10 @@
+import { Check, CheckCheck } from "lucide-react";
+
 const ChatMessage = ({ msg, isMe }) => {
   return (
-    <div className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
+    <div className={`flex w-full ${isMe ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[65%] px-4 py-2.5 rounded-2xl text-sm ${
+        className={`max-w-[65%] px-4 py-2.5 rounded-2xl text-sm break-all overflow-hidden ${
           isMe
             ? "bg-primary text-primary-foreground rounded-br-sm"
             : "bg-card border border-border/50 text-foreground rounded-bl-sm"
@@ -15,6 +17,12 @@ const ChatMessage = ({ msg, isMe }) => {
             minute: "2-digit",
           })}
         </p>
+
+        {
+          isMe &&(
+            msg.read? <CheckCheck className="w-3 h-3 text-blue-600 float-end"/>:<Check className="w-3 h-3 float-end text-primary-foreground/60 "/>
+          )
+        }
       </div>
     </div>
   );

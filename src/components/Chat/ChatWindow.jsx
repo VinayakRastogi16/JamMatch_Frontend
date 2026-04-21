@@ -12,6 +12,7 @@ const ChatWindow = ({
   currentUser,
   activeRoom,
   navigate,
+  isTyping
 }) => {
   return (
     <div className="flex flex-1 flex-col">
@@ -29,6 +30,13 @@ const ChatWindow = ({
               {activeUser.instrument?.[0]}
             </p>
           </div>
+          {
+            isTyping && (
+              <div className="px-6 py-1">
+                <span className="text-xs text-muted-foreground italic">Typing...</span>
+              </div>
+            )
+          }
         </div>
         <div>
           <button onClick={()=>{
