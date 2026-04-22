@@ -46,7 +46,7 @@ const ChatWindow = ({
         ><Phone/></button>
 
         <button onClick={()=>{
-          navigate(`/jam/${activeRoom}`)
+          navigate(`/video/${activeRoom}`)
         }}
         className="px-4 py-2 rounded-full text-primary-foreground transition-all text-sm font-semibold font-heading hover:bg-primary/85 shadow-[var(--glow-primary)]"
         ><Video/></button>

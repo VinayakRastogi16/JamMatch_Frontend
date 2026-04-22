@@ -9,6 +9,7 @@ import Jam from './pages/Jam';
 import { useState } from 'react';
 import Protected from './utils/Protected.utils';
 import Chat from "./pages/Chat"
+import VideoCall from "./pages/VideoCall"
 
 const getIsSignedIn = () => {
   try {
@@ -30,7 +31,7 @@ const getIsSignedIn = () => {
 
 function AppComponent({isSignedIn, setIsSignedIn}){
   const location = useLocation();
-  const hideNav = location.pathname.startsWith("/messages")||location.pathname.startsWith("/jam")
+  const hideNav = location.pathname.startsWith("/messages")||location.pathname.startsWith("/jam")||location.pathname.startsWith("/video")
 
   return(
     <>
@@ -41,6 +42,7 @@ function AppComponent({isSignedIn, setIsSignedIn}){
         <Route path='/feed' element={<Protected><Feed /></Protected>} />
         <Route path='/details' element={<Protected allowIncomplete={true}><Profile /></Protected>} />
         <Route path='/jam/:id' element={<Protected><Jam /></Protected>} />
+        <Route path='/video/:id' element={<Protected><VideoCall /></Protected>} />
         <Route path='/messages' element={<Protected><Chat /></Protected>} />
         <Route path='/messages/:roomId' element={<Protected><Chat /></Protected>} />
       </Routes>

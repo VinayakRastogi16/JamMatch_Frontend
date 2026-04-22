@@ -96,7 +96,7 @@ const Chat = () => {
     });
 
     return () => socketRef.current?.disconnect();
-  }, [activeRoom]);
+  }, [currentUser.id, activeRoom]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behaviour: "smooth" });
