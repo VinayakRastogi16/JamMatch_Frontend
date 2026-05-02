@@ -15,7 +15,6 @@ export default function Jam() {
   const navigate = useNavigate();
   const [muted, setMuted] = useState(false);
   const [status, setStatus] = useState("connecting...")
-
   useEffect(() => {
     socketRef.current = io("http://localhost:8080");
     const socket = socketRef.current
