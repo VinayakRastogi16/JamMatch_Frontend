@@ -2,7 +2,12 @@ import React from 'react'
 
 const VideoCall = ()=>{
     return (<>
-        <div className='font-bold'>Hi </div>
+        <div className='font-bold'>
+            <p>
+                Hellobiyaatch
+            </p>
+
+        </div>
     </>)
 }
 
