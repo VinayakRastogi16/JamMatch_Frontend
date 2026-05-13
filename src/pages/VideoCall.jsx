@@ -4,7 +4,7 @@ const VideoCall = ()=>{
     return (<>
         <div className='font-bold'>
             <p>
-                Hellobiyaatch
+                Hellobiy
             </p>
 
         </div>
