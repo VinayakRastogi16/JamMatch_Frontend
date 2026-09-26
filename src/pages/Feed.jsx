@@ -19,7 +19,6 @@ import { Button } from "../components/ui/button";
 import API from "../services/api";
 import TinderCard from "react-tinder-card";
 import { Navigate, useNavigate } from "react-router-dom";
-import { jwtDecode } from 'jwt-decode';
 
 const Feed = () => {
   const [matches, setMatches] = useState([]);
