@@ -10,6 +10,8 @@ import { useState } from 'react';
 import Protected from './utils/Protected.utils';
 import Chat from "./pages/Chat"
 import VideoCall from "./pages/VideoCall"
+import AudioRoom from './pages/AudioRoom';
+import Settings from './pages/Settings';
 
 const getIsSignedIn = () => {
   try {
@@ -31,7 +33,7 @@ const getIsSignedIn = () => {
 
 function AppComponent({isSignedIn, setIsSignedIn}){
   const location = useLocation();
-  const hideNav = location.pathname.startsWith("/messages")||location.pathname.startsWith("/jam")||location.pathname.startsWith("/video")
+  const hideNav = location.pathname.startsWith("/messages")||location.pathname.startsWith("/jam")||location.pathname.startsWith("/video")||location.pathname.startsWith("/audio1")
 
   return(
     <>
@@ -45,6 +47,8 @@ function AppComponent({isSignedIn, setIsSignedIn}){
         <Route path='/video/:id' element={<Protected><VideoCall /></Protected>} />
         <Route path='/messages' element={<Protected><Chat /></Protected>} />
         <Route path='/messages/:roomId' element={<Protected><Chat /></Protected>} />
+        <Route path='/audio1' element={<Protected><AudioRoom /></Protected>} />
+        <Route path='/settings' element={<Protected><Settings /></Protected>} />
       </Routes>
 
     </>

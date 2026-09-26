@@ -104,3 +104,14 @@
   background: rgba(249, 115, 22, 0.6);
   border-radius: 999px;
 }
+
+.nav-links{
+  padding: 18px;
+  border: 1px solid #da804025;
+  border-radius: 12px;
+}
+
+.nav-links:hover{
+  border: 1px solid #fb923c;
+  transition: 100;
+}
