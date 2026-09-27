@@ -1,4 +1,7 @@
 /* stylelint-disable at-rule-no-unknown */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -63,6 +66,19 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.ticket-theme {
+  --card: 30 24% 7%;
+  --card-foreground: 40 58% 80%;
+  --foreground: 40 58% 80%;
+  --secondary: 28 26% 13%;
+  --muted-foreground: 36 22% 58%;
+  --border: 30 20% 22%;
+  --primary: 10 70% 51%;
+  --primary-foreground: 40 58% 92%;
+  --ticket-cream: 40 58% 80%;
+  font-family: 'DM Sans', sans-serif;
 }
 
 #cuts{

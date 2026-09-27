@@ -30,6 +30,7 @@ const Login = ({setIsSignedIn}) => {
       localStorage.setItem("user", JSON.stringify({
         token: res.data.token,
         profileCompleted: res.data.user.profileCompleted,
+        email:res.data.user.email,
         id: res.data.user.id,
       }));
       console.log(res.data.user.profileCompleted)

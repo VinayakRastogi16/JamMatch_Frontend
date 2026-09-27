@@ -83,7 +83,7 @@ const Navbar = ({ isSignedIn, setIsSignedIn }) => {
               </span>
             </div>
           </Link>
-          <Link to="/audio1">
+          <Link to="/notifications">
             <div
               title="Notifications"
               className="nav-links bg-[#1B1B1D] text-gray-500 hover:text-[#E6E3DE] transition align-middle items-center justify-center flex h-8 w-8"

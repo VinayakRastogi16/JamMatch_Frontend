@@ -12,6 +12,8 @@ import Chat from "./pages/Chat"
 import VideoCall from "./pages/VideoCall"
 import AudioRoom from './pages/AudioRoom';
 import Settings from './pages/Settings';
+import VerifyEmail from './pages/VerifyEmail';
+import VerifyEmailPending from './pages/VerifyEmailPending';
 
 const getIsSignedIn = () => {
   try {
@@ -33,7 +35,7 @@ const getIsSignedIn = () => {
 
 function AppComponent({isSignedIn, setIsSignedIn}){
   const location = useLocation();
-  const hideNav = location.pathname.startsWith("/messages")||location.pathname.startsWith("/jam")||location.pathname.startsWith("/video")||location.pathname.startsWith("/audio1")
+  const hideNav = location.pathname.startsWith("/messages")||location.pathname.startsWith("/jam")||location.pathname.startsWith("/video")||location.pathname.startsWith("/audio1")||location.pathname.startsWith("/verify-email")
 
   return(
     <>
@@ -41,6 +43,8 @@ function AppComponent({isSignedIn, setIsSignedIn}){
       <Routes>
         <Route path='/' element={<Login setIsSignedIn={setIsSignedIn} />} />
         <Route path='/signup' element={<SignUp setIsSignedIn={setIsSignedIn} />} />
+        <Route path="/verify-email/pending" element={<VerifyEmailPending />} />
+        <Route path="/verify-email/:token" element={<VerifyEmail />} />
         <Route path='/feed' element={<Protected><Feed /></Protected>} />
         <Route path='/details' element={<Protected allowIncomplete={true}><Profile /></Protected>} />
         <Route path='/jam/:id' element={<Protected><Jam /></Protected>} />
