@@ -37,13 +37,6 @@ const Feed = () => {
         setMatches(res.data);
       } catch (e) {
         console.error(e);
-        if (
-        e.response?.status === 403 &&
-        e.response?.data?.code === "EMAIL_NOT_VERIFIED"
-      ) {
-        navigate("/verify-email/pending");
-        return;
-      }
       }
     };
 

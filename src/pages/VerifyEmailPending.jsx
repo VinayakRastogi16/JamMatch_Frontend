@@ -1,40 +1,70 @@
 import { useNavigate } from "react-router-dom";
-import loginBG from "../../public/login-bg.jpg";
-import logo from "../../public/image.svg";
+import loginBG from "../assets/login-bg.jpg";
+import logo from "../assets/image.svg";
 import { Loader2, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import API from "../services/api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const VerifyEmailPending = ()=>{
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
-    const [sent, setSent] = useState(false);
-    const navigate = useNavigate();
+const VerifyEmailPending = () => {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [sent, setSent] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+  const navigate = useNavigate();
 
-    const user = JSON.parse(localStorage.getItem("user")||"{}");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-    const resendVerificationMail = async ()=>{
-        try{
-            setLoading(true);
-            setMessage("");
+  const resendVerificationMail = async () => {
+    if (cooldown > 0) return;
 
-            const res = await API.post("/resend-verification", {
-                email:user.email,
-            });
+    try {
+      setLoading(true);
+      setMessage("");
 
-            setSent(true);
-            setMessage(res.data.message);
-        }catch(e){
-            setMessage(
-                e.response?.data?.message||"Failed to resend verification email"
-            );
-        }finally{
-            setLoading(false);
-        }
+      const res = await API.post("/resend-verification", {
+        email: user.email,
+      });
+
+      setSent(true);
+      setMessage(res.data.message);
+      setCooldown(60);
+    } catch (e) {
+      setMessage(
+        e.response?.data?.message || "Failed to resend verification email",
+      );
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return (
+  useEffect(() => {
+    if (cooldown <= 0) return;
+
+    const timer = setInterval(() => {
+      setCooldown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [cooldown]);
+
+  useEffect(() => {
+    const getStatus = async () => {
+      try {
+        const res = await API.get("/email-verification-status");
+
+        if (res.data.emailVerified) {
+          navigate("/feed");
+        }
+      } catch (e) {
+        console.error("Failed to check verification status", e);
+      }
+    };
+
+    getStatus();
+  }, [navigate]);
+
+  return (
     <div className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-background font-sans px-4 py-10">
       {/* Background */}
       <img
@@ -67,66 +97,72 @@ const VerifyEmailPending = ()=>{
 
             {/* Status Icon */}
             <div className="flex justify-center">
-                <div className="flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 border border-primary/30 mb-10">
-                  {sent?<Check className="w-9 h-9 text-primary"/>:<Loader2 className="w-9 h-9 text-primary animate-spin" />}
-                </div>
-
+              <div className="flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 border border-primary/30 mb-10">
+                {sent ? (
+                  <Check className="w-9 h-9 text-primary" />
+                ) : (
+                  <Loader2 className="w-9 h-9 text-primary animate-spin" />
+                )}
+              </div>
             </div>
 
             {/* Content */}
             <div className="text-center space-y-3">
-                <>
-                  <h1 className="font-heading text-2xl sm:text-3xl font-bold text-foreground">
-                    {sent?"Email is verified":"Get yourself verified"}
-                  </h1>
+              <h1 className="font-heading text-2xl sm:text-3xl font-bold text-foreground">
+                {sent ? "Verification email sent" : "Get yourself verified"}
+              </h1>
 
-                  <p className="text-sm sm:text-base text-muted-foreground">
-                    {sent?"Good to go!!":"We have sent you a verification email."}
-                  </p>
-                </>
-              
+              <p className="text-sm sm:text-base text-muted-foreground">
+                {sent
+                  ? "We've sent you a new verification link. Check your inbox."
+                  : "We have sent you a verification email."}
+              </p>
 
-            {/* Perforation */}
-            <div className="relative flex items-center" aria-hidden>
-              <div className="absolute -left-7 sm:-left-9 w-5 h-5 rounded-full bg-background border-r border-white/15" />
+              {/* Perforation */}
+              <div className="relative flex items-center" aria-hidden>
+                <div className="absolute -left-7 sm:-left-9 w-5 h-5 rounded-full bg-background border-r border-white/15" />
 
-              <div className="flex-1 border-t-2 border-dashed border-white/15" />
+                <div className="flex-1 border-t-2 border-dashed border-white/15" />
 
-              <div className="absolute -right-7 sm:-right-9 w-5 h-5 rounded-full bg-background border-l border-white/15" />
-            </div>
+                <div className="absolute -right-7 sm:-right-9 w-5 h-5 rounded-full bg-background border-l border-white/15" />
+              </div>
 
-              {sent?<Button
-              onClick={()=>navigate("/feed")}
-                className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-[var(--glow-primary)]"
-              >
-                Discover your Jam Partners
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>:<Button
-                onClick={resendVerificationMail}
-                className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-[var(--glow-primary)]"
-              >
-                {loading? "Sending..." : "Resend verification email"}
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-              }
+              {/* Button */}
+              {cooldown > 0 ? (
+                <Button
+                  disabled
+                  className="w-full h-12 text-base font-semibold"
+                >
+                  Resend link in {cooldown}s
+                </Button>
+              ) : (
+                <Button
+                  onClick={resendVerificationMail}
+                  disabled={loading}
+                  className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-[var(--glow-primary)]"
+                >
+                  {loading ? "Sending..." : "Resend verification email"}
+
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              )}
 
               {message && (
-                <p className="text-center text-sm text-red-500">
-                    {message}
+                <p className="text-center text-sm text-muted-foreground">
+                  {message}
                 </p>
               )}
+            </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        
-      </div>
-      <p className="mt-5 text-center text-[10px] tracking-[0.3em] text-white/20 uppercase">
+          {/* Footer */}
+        </div>
+        <p className="mt-5 text-center text-[10px] tracking-[0.3em] text-white/20 uppercase">
           Backstage pass · Admit one
         </p>
-    </div>
+      </div>
     </div>
   );
-}
+};
 
 export default VerifyEmailPending;

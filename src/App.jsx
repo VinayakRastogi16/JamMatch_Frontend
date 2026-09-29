@@ -1,5 +1,5 @@
-import React from 'react'
-import {BrowserRouter, Routes, Route, useLocation} from "react-router-dom";
+import React, { useEffect } from 'react'
+import {BrowserRouter, Routes, Route, useLocation, useNavigate} from "react-router-dom";
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Feed from './pages/Feed';
@@ -7,12 +7,13 @@ import Profile from './pages/ProfileForm';
 import Navbar from './components/NavBar';
 import Jam from './pages/Jam';
 import { useState } from 'react';
-import Protected from './utils/Protected.utils';
+import {Protected, ProtectedVerification} from './utils/Protected.utils';
 import Chat from "./pages/Chat"
 import VideoCall from "./pages/VideoCall"
 import AudioRoom from './pages/AudioRoom';
 import Settings from './pages/Settings';
 import VerifyEmail from './pages/VerifyEmail';
+import { setNavigate } from './services/navigation';
 import VerifyEmailPending from './pages/VerifyEmailPending';
 
 const getIsSignedIn = () => {
@@ -35,6 +36,11 @@ const getIsSignedIn = () => {
 
 function AppComponent({isSignedIn, setIsSignedIn}){
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    setNavigate(navigate);
+  }, [navigate]);
   const hideNav = location.pathname.startsWith("/messages")||location.pathname.startsWith("/jam")||location.pathname.startsWith("/video")||location.pathname.startsWith("/audio1")||location.pathname.startsWith("/verify-email")
 
   return(
@@ -43,7 +49,9 @@ function AppComponent({isSignedIn, setIsSignedIn}){
       <Routes>
         <Route path='/' element={<Login setIsSignedIn={setIsSignedIn} />} />
         <Route path='/signup' element={<SignUp setIsSignedIn={setIsSignedIn} />} />
-        <Route path="/verify-email/pending" element={<VerifyEmailPending />} />
+        <Route element={<ProtectedVerification/>}>
+          <Route path="/verify-email/pending" element={<VerifyEmailPending />} />
+        </Route>
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
         <Route path='/feed' element={<Protected><Feed /></Protected>} />
         <Route path='/details' element={<Protected allowIncomplete={true}><Profile /></Protected>} />

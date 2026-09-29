@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import loginBG from "../../public/login-bg.jpg";
-import logo from "../../public/image.svg";
+import loginBG from "../assets/login-bg.jpg";
+import logo from "../assets/image.svg";
 
 import { Loader2, MailCheck, ShieldAlert, ArrowRight } from "lucide-react";
 
@@ -43,6 +43,11 @@ const VerifyEmail = () => {
 
         setStatus("verified");
         setMessage(data.message || "Email verified successfully!");
+
+        setTimeout(()=>{
+          navigate("/feed");
+        }, 2000);
+
         console.log(message);
       } catch (error) {
         console.error("Email verification failed:", error);
