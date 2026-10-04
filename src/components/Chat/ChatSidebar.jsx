@@ -16,7 +16,11 @@ const ChatSideBar = ({
       <div className="px-5 py-5 border-b border-border/50 flex flex-col">
       <div className="flex flex-col items-start gap-5">
         <div className="flex gap-5">
-          <Link to="/feed"><ArrowLeft className="bg-primary rounded-full hover:bg-primary/50"/></Link>
+          <Link to="/feed">
+            <div>
+              <ArrowLeft className="bg-transparent hover:rounded-lg hover:bg-primary/50 hover:transition-colors"/>
+            </div>
+          </Link>
         <h1 className="font-heading font-bold text-xl text-foreground">Messages</h1>
         </div>
         

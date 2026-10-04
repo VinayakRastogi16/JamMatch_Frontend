@@ -5,7 +5,6 @@ import SignUp from './pages/SignUp';
 import Feed from './pages/Feed';
 import Profile from './pages/ProfileForm';
 import Navbar from './components/NavBar';
-import Jam from './pages/Jam';
 import { useState } from 'react';
 import {Protected, ProtectedVerification} from './utils/Protected.utils';
 import Chat from "./pages/Chat"
@@ -41,7 +40,7 @@ function AppComponent({isSignedIn, setIsSignedIn}){
   useEffect(()=>{
     setNavigate(navigate);
   }, [navigate]);
-  const hideNav = location.pathname.startsWith("/messages")||location.pathname.startsWith("/jam")||location.pathname.startsWith("/video")||location.pathname.startsWith("/audio1")||location.pathname.startsWith("/verify-email")
+  const hideNav = location.pathname.startsWith("/messages")||location.pathname.startsWith("/audio")||location.pathname.startsWith("/video")||location.pathname.startsWith("/audio1")||location.pathname.startsWith("/verify-email")
 
   return(
     <>
@@ -55,7 +54,6 @@ function AppComponent({isSignedIn, setIsSignedIn}){
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
         <Route path='/feed' element={<Protected><Feed /></Protected>} />
         <Route path='/details' element={<Protected allowIncomplete={true}><Profile /></Protected>} />
-        <Route path='/jam/:id' element={<Protected><Jam /></Protected>} />
         <Route path='/video/:id' element={<Protected><VideoCall /></Protected>} />
         <Route path='/messages' element={<Protected><Chat /></Protected>} />
         <Route path='/messages/:roomId' element={<Protected><Chat /></Protected>} />
