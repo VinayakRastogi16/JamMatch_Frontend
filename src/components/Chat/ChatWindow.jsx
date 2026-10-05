@@ -79,8 +79,8 @@ const ChatWindow = ({
         )}
       </div>
 
-      <div className="px-6 py-4 border-t border-border/50 bg-card/60 backdrop-blur-xl">
-        <div className="flex items-center gap-3 bg-secondary/50 border border-border/50 rounded-full px-4 py-2">
+      <div className="px-6  py-4 border-t border-border/50 bg-card/60 backdrop-blur-xl">
+        <div className="flex max-w-3xl mx-auto items-center gap-3 bg-secondary/50 border border-border/50 rounded-full px-4 py-2">
           <input
             type="text"
             value={input}
@@ -92,7 +92,7 @@ const ChatWindow = ({
           <button
             onClick={sendMessage}
             disabled={!input.trim()}
-            className="w-8 h-8 rounded-full bg-primary/60 flex items-center justify-center disabled:opacity-40 transition-all hover:bg-primary/90"
+            className="w-8 h-8  rounded-full bg-primary/60 flex items-center justify-center disabled:opacity-40 transition-all hover:bg-primary/90"
           >
             <Send className="w-4 h-4 text-primary-foreground" />
           </button>

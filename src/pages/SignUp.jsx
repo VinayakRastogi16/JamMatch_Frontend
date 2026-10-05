@@ -214,7 +214,13 @@ const Signup = ({ setIsSignedIn }) => {
 
             <Button
               type="submit"
-              className="bg-[#f68523] hover:bg-[rgb(246,133,35)]/75 pr-[18.3vh] pl-[18.3vh] h-12 text-xl font-semibold mt-12"
+              className=" w-full
+                h-12
+                mt-8
+                bg-[#f68523]
+                hover:bg-[#f68523]/75
+                text-lg
+                font-semibold"
             >
               Sign Up
             </Button>

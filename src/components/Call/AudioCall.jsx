@@ -244,6 +244,7 @@ const AudioCall = ({ roomId, onEndCall, pipWindow, activeUser }) => {
         socketRef.current = null;
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [callRoomId]);
 
   useEffect(() => {

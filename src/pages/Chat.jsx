@@ -15,7 +15,6 @@ const Chat = () => {
   const bottomRef = useRef(null);
   const typingTimeOutRef = useRef(null);
 
-
   const [matches, setMatches] = useState([]);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -53,13 +52,13 @@ const Chat = () => {
     if (!activeRoom) return;
 
     const newPipWindow = await documentPictureInPicture.requestWindow({
-      width:360,
-      height:500
-    })
+      width: 360,
+      height: 500,
+    });
 
-    setPipWindow(newPipWindow)
+    setPipWindow(newPipWindow);
 
-    console.log("PiP window open", pipWindow)
+    console.log("PiP window open", pipWindow);
     setCallActive(true);
   };
 
@@ -114,15 +113,6 @@ const Chat = () => {
 
     API.get("/matched-users").then((res) => {
       setMatches(res.data);
-
-      if (res.data.length > 0) {
-        const first = res.data[0];
-
-        const room = generateRoom(currentUser.id, first.id);
-
-        setActiveRoom(room);
-        setActiveUser(first);
-      }
     });
 
     socket.on("online-users", (users) => {
@@ -148,6 +138,11 @@ const Chat = () => {
 
     API.get(`/chat/${activeRoom}`).then((res) => {
       setMessages(res.data);
+
+      socketRef.current?.emit("message-read", {
+        roomId: activeRoom,
+        userId: currentUser.id,
+      });
     });
 
     if (socketRef.current) {
@@ -155,7 +150,15 @@ const Chat = () => {
     }
 
     socketRef.current?.on("receive-message", (msg) => {
+      console.log("New message received:", msg);
       setMessages((prev) => [...prev, msg]);
+
+      if (msg.senderId !== currentUser.id) {
+        socketRef.current?.emit("message-read", {
+          roomId: activeRoom,
+          userId: currentUser.id,
+        });
+      }
     });
 
     socketRef.current?.on("typing", () => {
@@ -174,20 +177,30 @@ const Chat = () => {
       );
     });
 
-    socketRef.current?.emit("message-read", {
-      roomId: activeRoom,
-      userId: currentUser.id,
-    });
+    return () => {
+      socketRef.current?.off("receive-message");
+      socketRef.current?.off("typing");
+      socketRef.current?.off("stop-typing");
+      socketRef.current?.off("message-read");
+    };
   }, [currentUser.id, activeRoom]);
+
+  useEffect(()=>{
+    bottomRef.current?.scrollIntoView({
+      behavior:"smooth"
+    })
+  }, [messages])
 
   return (
     <>
-      {callActive&&(<AudioCall
-        roomId = {activeRoom}
-        onEndCall = {endCall}
-        pipWindow = {pipWindow}
-        activeUser = {activeUser}
-      />)}
+      {callActive && (
+        <AudioCall
+          roomId={activeRoom}
+          onEndCall={endCall}
+          pipWindow={pipWindow}
+          activeUser={activeUser}
+        />
+      )}
       <div className="flex h-screen bg-background overflow-hidden">
         <ChatSidebar
           filteredMatches={filteredMatches}
@@ -199,7 +212,7 @@ const Chat = () => {
           currentUser={currentUser}
           onlineUsers={onlineUsers}
         />
-        {activeUser ? (
+        {activeRoom&&activeUser ? (
           <ChatWindow
             activeUser={activeUser}
             messages={messages}
@@ -212,7 +225,7 @@ const Chat = () => {
             activeRoom={activeRoom}
             navigate={navigate}
             isTyping={isTyping}
-            onStartCall = {startCall}
+            onStartCall={startCall}
           />
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground">
